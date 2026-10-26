@@ -65,6 +65,10 @@ Checklist de revisión de un PR:
 - [ ] Si la operación escribe más de una fila o tabla, está dentro de un `TransactionScope` en la BLL.
 - [ ] El evento de la UI tiene `try/catch` y la grilla se refresca después de la operación.
 
+## Consigna y entregas
+
+La consigna del campus está copiada en [docs/CONSIGNA.md](docs/CONSIGNA.md), con una tabla de qué entrega cubre cada parte del proyecto. Son cinco entregas parciales (negocio, base de datos, solución en capas sin persistir, solución con persistencia, final con transacciones de negocio y defensa oral) más un documento con carátula, diagrama de base de datos, diagrama de clases y manual de usuario. Git y Trello suman puntos.
+
 ## Pendiente
 
 Ver el tablero de Trello. A grandes rasgos: ABM de actividades, ABM de categorías, baja de inscripciones desde la UI, pagos de cuotas e inscripciones en una sola transacción, reportes (inscriptos por actividad y recaudación), validaciones con expresiones regulares, controles de usuario reutilizables y lo que pida la consigna del campus.
