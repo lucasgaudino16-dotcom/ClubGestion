@@ -12,5 +12,12 @@ namespace MAPPER
             Arancel = (decimal)dr["ARANCEL"],
             Cupo = (int)dr["CUPO"]
         };
+
+        public static void CargarParametros(Microsoft.Data.SqlClient.SqlCommand cmd, Actividad a)
+        {
+            cmd.Parameters.AddWithValue("@Nombre", a.Nombre);
+            cmd.Parameters.AddWithValue("@Arancel", a.Arancel);
+            cmd.Parameters.AddWithValue("@Cupo", a.Cupo);
+        }
     }
 }
