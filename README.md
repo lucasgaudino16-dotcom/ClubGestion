@@ -65,9 +65,14 @@ Checklist de revisión de un PR:
 - [ ] Si la operación escribe más de una fila o tabla, está dentro de un `TransactionScope` en la BLL.
 - [ ] El evento de la UI tiene `try/catch` y la grilla se refresca después de la operación.
 
-## Consigna y entregas
+## Documentación
 
-La consigna del campus está copiada en [docs/CONSIGNA.md](docs/CONSIGNA.md), con una tabla de qué entrega cubre cada parte del proyecto. Son cinco entregas parciales (negocio, base de datos, solución en capas sin persistir, solución con persistencia, final con transacciones de negocio y defensa oral) más un documento con carátula, diagrama de base de datos, diagrama de clases y manual de usuario. Git y Trello suman puntos.
+- [docs/DESCRIPCION-DEL-SISTEMA.md](docs/DESCRIPCION-DEL-SISTEMA.md) — **empezá por acá.** Qué hace el sistema, qué queda afuera, los cuatro conceptos del negocio, las reglas, las transacciones y para qué sirve cada capa. Sin código. Es el punto 1 de la documentación de la entrega y la base de la presentación del negocio.
+- [docs/CONSIGNA.md](docs/CONSIGNA.md) — la consigna del campus copiada, con una tabla de qué entrega cubre cada parte del proyecto.
+
+Son cinco entregas parciales (negocio, base de datos, solución en capas sin persistir, solución con persistencia, final con transacciones de negocio y defensa oral) más un documento con carátula, diagrama de base de datos, diagrama de clases y manual de usuario. Git y Trello suman puntos.
+
+Falta: diagrama de base de datos, diagrama de clases y manual de usuario.
 
 ## Pendiente
 

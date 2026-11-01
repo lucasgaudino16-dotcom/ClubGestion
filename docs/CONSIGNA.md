@@ -33,5 +33,5 @@ Se solicita el desarrollo de un negocio. El mismo contará con distintas entrega
 | 3. Solución inicial en capas | Entity, MAPPER, DAL, BLL y UI armados; reglas de negocio de socios e inscripciones en la BLL. Faltan formularios de actividades, categorías y pagos. |
 | 4. Persistencia | ABM de socios e inscripciones ya leen y escriben en la base. |
 | 5. Transacciones de negocio | `InscripcionBLL.Inscribir` con TransactionScope. Falta la de pagos. |
-| Documentación | Pendiente completa. |
+| Documentación | Descripción del sistema escrita en [DESCRIPCION-DEL-SISTEMA.md](DESCRIPCION-DEL-SISTEMA.md). Faltan los dos diagramas y el manual de usuario. |
 | Git y Trello | Repo público y tablero creados el 26/10. |
