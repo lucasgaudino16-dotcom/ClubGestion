@@ -1,0 +1,76 @@
+classDiagram
+    direction LR
+
+    namespace UI {
+        class Form1 {
+            -CategoriaBLL _categoriaBll
+            -SocioBLL _socioBll
+            -ActividadBLL _actividadBll
+            -InscripcionBLL _inscripcionBll
+            -Form1_Load()
+            -CargarCategorias()
+            -CargarSocios()
+            -CargarActividades()
+            -CargarInscriptos()
+            -btnAgregar_Click()
+            -btnModificar_Click()
+            -btnEliminar_Click()
+            -btnBuscar_Click()
+            -btnInscribir_Click()
+            -btnDesinscribir_Click()
+            -MostrarError(Exception)
+        }
+    }
+
+    namespace BLL {
+        class CategoriaBLL {
+            -CategoriaDAL _dal
+            +ObtenerTodas() List~Categoria~
+            +ObtenerPorId(int) Categoria
+            +Insertar(Categoria)
+            +Modificar(Categoria)
+            +Eliminar(int)
+            -Validar(Categoria)
+        }
+        class SocioBLL {
+            -SocioDAL _dal
+            -InscripcionDAL _inscripcionDal
+            +ObtenerTodos() List~Socio~
+            +Buscar(string) List~Socio~
+            +ObtenerPorId(int) Socio
+            +Insertar(Socio)
+            +Modificar(Socio)
+            +Eliminar(int)
+            -Validar(Socio)
+        }
+        class ActividadBLL {
+            -ActividadDAL _dal
+            +ObtenerTodas() List~Actividad~
+            +ObtenerPorId(int) Actividad
+            +CuposLibres(Actividad) int
+            +Insertar(Actividad)
+            +Modificar(Actividad)
+            +Eliminar(int)
+            -Validar(Actividad)
+        }
+        class InscripcionBLL {
+            -InscripcionDAL _dal
+            -ActividadDAL _actividadDal
+            -SocioDAL _socioDal
+            +Inscribir(Socio, List~Actividad~)
+            +Desinscribir(Socio, Actividad)
+            +Desinscribir(int, int)
+            +ObtenerPorActividad(int) List~InscripcionDTO~
+            +ObtenerPorSocio(int) List~InscripcionDTO~
+        }
+        class InscripcionDTOMapper {
+            <<static>>
+            +Map(Inscripcion) InscripcionDTO
+            +Map(List~Inscripcion~) List~InscripcionDTO~
+        }
+    }
+
+    Form1 --> CategoriaBLL
+    Form1 --> SocioBLL
+    Form1 --> ActividadBLL
+    Form1 --> InscripcionBLL

@@ -1,0 +1,66 @@
+classDiagram
+    direction LR
+
+    class Categoria {
+        +int Id
+        +string Descripcion
+        +decimal CuotaBase
+        +ToString() string
+    }
+
+    class Socio {
+        +int Id
+        +string Nombre
+        +string Apellido
+        +string Dni
+        +string Email
+        +string Telefono
+        +DateTime FechaAlta
+        +bool Activo
+        +Categoria Categoria
+        +ToString() string
+    }
+
+    class Actividad {
+        +int Id
+        +string Nombre
+        +decimal Arancel
+        +int Cupo
+        +ToString() string
+    }
+
+    class Inscripcion {
+        +Socio Socio
+        +Actividad Actividad
+        +DateTime FechaInscripcion
+        +decimal ArancelAplicado
+    }
+
+    class InscripcionDTO {
+        +int IdSocio
+        +int IdActividad
+        +string Socio
+        +string Dni
+        +string Categoria
+        +string Actividad
+        +DateTime Fecha
+        +decimal Arancel
+    }
+
+    class Exception
+
+    class ReglaNegocioException {
+        +ReglaNegocioException(string)
+        +ReglaNegocioException(string, Exception)
+    }
+
+    class AccesoDatosException {
+        +AccesoDatosException(string)
+        +AccesoDatosException(string, Exception)
+    }
+
+    Socio "0..*" --> "1" Categoria
+    Inscripcion "0..*" --> "1" Socio
+    Inscripcion "0..*" --> "1" Actividad
+    Exception <|-- ReglaNegocioException
+    Exception <|-- AccesoDatosException

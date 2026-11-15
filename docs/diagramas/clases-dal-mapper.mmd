@@ -1,0 +1,39 @@
+classDiagram
+    direction TB
+
+    namespace DAL {
+        class CategoriaDAL
+        class SocioDAL
+        class ActividadDAL
+        class InscripcionDAL
+    }
+
+    namespace MAPPER {
+        class CategoriaMapper {
+            <<static>>
+            +Map(IDataRecord) Categoria
+            +MapLista(DataTable) List~Categoria~
+        }
+        class SocioMapper {
+            <<static>>
+            +Map(IDataRecord) Socio
+            +CargarParametros(SqlCommand, Socio)
+        }
+        class ActividadMapper {
+            <<static>>
+            +Map(IDataRecord) Actividad
+            +CargarParametros(SqlCommand, Actividad)
+        }
+        class InscripcionMapper {
+            <<static>>
+            +Map(IDataRecord) Inscripcion
+        }
+    }
+
+    CategoriaDAL ..> CategoriaMapper
+    SocioDAL ..> SocioMapper
+    ActividadDAL ..> ActividadMapper
+    InscripcionDAL ..> InscripcionMapper
+    SocioMapper ..> CategoriaMapper
+    InscripcionMapper ..> SocioMapper
+    InscripcionMapper ..> ActividadMapper

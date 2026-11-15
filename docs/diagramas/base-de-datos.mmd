@@ -1,0 +1,38 @@
+erDiagram
+    direction LR
+
+    CATEGORIA {
+        int ID_CATEGORIA PK
+        nvarchar(50) DESCRIPCION
+        decimal CUOTA_BASE
+    }
+
+    SOCIO {
+        int ID_SOCIO PK
+        nvarchar(50) NOMBRE
+        nvarchar(50) APELLIDO
+        nvarchar(8) DNI
+        nvarchar(100) EMAIL
+        nvarchar(20) TELEFONO
+        datetime FECHA_ALTA
+        bit ACTIVO
+        int ID_CATEGORIA FK
+    }
+
+    ACTIVIDAD {
+        int ID_ACTIVIDAD PK
+        nvarchar(80) NOMBRE
+        decimal ARANCEL
+        int CUPO
+    }
+
+    INSCRIPCION {
+        int ID_SOCIO PK, FK
+        int ID_ACTIVIDAD PK, FK
+        datetime FECHA_INSCRIPCION
+        decimal ARANCEL_APLICADO
+    }
+
+    CATEGORIA ||--o{ SOCIO : "              "
+    SOCIO ||--o{ INSCRIPCION : "              "
+    ACTIVIDAD ||--o{ INSCRIPCION : "              "

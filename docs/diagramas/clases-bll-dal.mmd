@@ -1,0 +1,59 @@
+classDiagram
+    direction LR
+
+    namespace BLL {
+        class CategoriaBLL
+        class SocioBLL
+        class ActividadBLL
+        class InscripcionBLL
+    }
+
+    namespace DAL {
+        class CategoriaDAL {
+            +ObtenerTodas() List~Categoria~
+            +ObtenerPorId(int) Categoria
+            +ExisteDescripcion(string, int) bool
+            +ContarSocios(int) int
+            +Insertar(Categoria) int
+            +Modificar(Categoria)
+            +Eliminar(int)
+        }
+        class SocioDAL {
+            +ObtenerTodos() List~Socio~
+            +Buscar(string) List~Socio~
+            +ObtenerPorId(int) Socio
+            +ExisteDni(string, int) bool
+            +Insertar(Socio) int
+            +Modificar(Socio)
+            +Eliminar(int)
+        }
+        class ActividadDAL {
+            +ObtenerTodas() List~Actividad~
+            +ObtenerPorId(int) Actividad
+            +ContarInscriptos(int) int
+            +ExisteNombre(string, int) bool
+            +Insertar(Actividad) int
+            +Modificar(Actividad)
+            +Eliminar(int)
+        }
+        class InscripcionDAL {
+            +ObtenerPorActividad(int) List~Inscripcion~
+            +ObtenerPorSocio(int) List~Inscripcion~
+            +Existe(int, int) bool
+            +Insertar(int, int, DateTime, decimal)
+            +Eliminar(int, int)
+            -Listar(string, int) List~Inscripcion~
+        }
+        class Conexion {
+            <<static>>
+            +string Cadena
+        }
+    }
+
+    CategoriaBLL --> CategoriaDAL
+    SocioBLL --> SocioDAL
+    SocioBLL --> InscripcionDAL
+    ActividadBLL --> ActividadDAL
+    InscripcionBLL --> InscripcionDAL
+    InscripcionBLL --> ActividadDAL
+    InscripcionBLL --> SocioDAL

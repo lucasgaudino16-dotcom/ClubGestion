@@ -32,7 +32,7 @@ ClubGestion.sln
 ├─ DAL/           Acceso a datos con Microsoft.Data.SqlClient. Referencia a Entity y MAPPER.
 ├─ BLL/           Reglas de negocio y transacciones de negocio. Referencia a Entity y DAL.
 ├─ ClubGestion/   Windows Forms. Usa solo BLL y Entity.
-├─ docs/          Documentación del TP (PDF), diagramas (HTML y PNG), capturas y consigna.
+├─ docs/          Documentación del TP (PDF), diagramas (Mermaid y PNG) y capturas.
 └─ script_base_de_datos.sql
 ```
 
@@ -71,8 +71,7 @@ Modelo:
 ## Documentación
 
 - `docs\ClubGestion - Documentacion del TP Integrador.pdf`: carátula, descripción del sistema, reglas, transacciones, arquitectura, diagrama de base de datos, diagrama de clases y manual de usuario con capturas. Se genera desde el `.html` del mismo nombre.
-- `docs\diagramas\`: los diagramas en HTML (editables) y en `docs\img\` las versiones PNG.
-- `docs\CONSIGNA.md`: la consigna del campus y cómo la cubre el proyecto.
+- `docs\diagramas\`: los diagramas en Mermaid (archivos `.mmd`, se pueden editar en mermaid.live) y en `docs\img\` las versiones PNG.
 
 ## Cómo trabajamos
 
