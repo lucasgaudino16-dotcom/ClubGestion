@@ -27,6 +27,11 @@ namespace ClubGestion
                 clbActividades.DataSource = _actividadBll.ObtenerTodas();
                 clbActividades.DisplayMember = "Nombre";
 
+                cboModificarActividad.DataSource = _actividadBll.ObtenerTodas();
+                cboModificarActividad.DisplayMember = "Nombre";
+                cboModificarActividad.ValueMember = "Id";
+                cboModificarActividad.SelectedIndex = -1;
+
                 cboActividadVer.DataSource = _actividadBll.ObtenerTodas();
                 cboActividadVer.DisplayMember = "Nombre";
                 cboActividadVer.ValueMember = "Id";
@@ -218,6 +223,161 @@ namespace ClubGestion
         {
             var detalle = ex.InnerException != null ? Environment.NewLine + Environment.NewLine + "Detalle: " + ex.InnerException.Message : string.Empty;
             MessageBox.Show(ex.Message + detalle, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var socios = _socioBll.Buscar(txtBuscar.Text);
+
+                dgvSocios.DataSource = null;
+                dgvSocios.DataSource = socios;
+
+                if (dgvSocios.Columns["Id"] != null)
+                    dgvSocios.Columns["Id"].Visible = false;
+
+                if (socios.Count == 0)
+                {
+                    MessageBox.Show(
+                        "No se encontraron socios.",
+                        "Búsqueda",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnNuevaActividad_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (Agregar formulario = new Agregar())
+                {
+                    if (formulario.ShowDialog(this) == DialogResult.OK)
+                    {
+                        MessageBox.Show(
+                            "La actividad se agregó correctamente.",
+                            "ClubGestion",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+                        clbActividades.DataSource = null;
+                        clbActividades.DataSource = _actividadBll.ObtenerTodas();
+                        clbActividades.DisplayMember = "Nombre";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnModificarActividad_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboModificarActividad.SelectedItem is not Actividad actividad)
+                {
+                    MessageBox.Show(
+                        "Seleccione una actividad para modificar.",
+                        "ClubGestion",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                using (Agregar formulario = new Agregar(actividad))
+                {
+                    if (formulario.ShowDialog(this) == DialogResult.OK)
+                    {
+                        ActualizarActividades();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+        private void ActualizarActividades()
+        {
+            try
+            {
+                var actividades = _actividadBll.ObtenerTodas();
+
+                clbActividades.DataSource = null;
+                clbActividades.DataSource = actividades;
+                clbActividades.DisplayMember = "Nombre";
+
+                cboModificarActividad.DataSource = null;
+                cboModificarActividad.DataSource = actividades;
+                cboModificarActividad.DisplayMember = "Nombre";
+                cboModificarActividad.ValueMember = "Id";
+                cboModificarActividad.SelectedIndex = -1;
+
+                cboActividadVer.DataSource = null;
+                cboActividadVer.DataSource = _actividadBll.ObtenerTodas();
+                cboActividadVer.DisplayMember = "Nombre";
+                cboActividadVer.ValueMember = "Id";
+                cboActividadVer.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnEliminarActividad_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboModificarActividad.SelectedItem is not Actividad actividad)
+                {
+                    MessageBox.Show(
+                        "Seleccione una actividad para eliminar.",
+                        "ClubGestion",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DialogResult respuesta = MessageBox.Show(
+                    $"¿Está seguro de eliminar la actividad '{actividad.Nombre}'?",
+                    "Confirmar eliminación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (respuesta != DialogResult.Yes)
+                    return;
+
+                _actividadBll.Eliminar(actividad.Id);
+
+                MessageBox.Show(
+                    "Actividad eliminada correctamente.",
+                    "ClubGestion",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                ActualizarActividades();
+            }
+            catch (ReglaNegocioException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
         }
     }
 }

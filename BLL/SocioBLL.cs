@@ -22,6 +22,25 @@ namespace BLL
             }
         }
 
+        public List<Socio> Buscar(string texto)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(texto))
+                    return _dal.ObtenerTodos();
+
+                return _dal.Buscar(texto.Trim());
+            }
+            catch (AccesoDatosException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error inesperado al buscar socios.", ex);
+            }
+        }
+
         public Socio ObtenerPorId(int id)
         {
             try

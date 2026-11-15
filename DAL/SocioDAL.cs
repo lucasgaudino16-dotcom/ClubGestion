@@ -32,6 +32,39 @@ namespace DAL
             }
         }
 
+        public List<Socio> Buscar(string texto)
+        {
+            try
+            {
+                var lista = new List<Socio>();
+
+                using (var conn = new SqlConnection(Conexion.Cadena))
+                using (var cmd = new SqlCommand(
+                    Select + " WHERE S.APELLIDO LIKE @Busqueda OR S.DNI LIKE @Busqueda " +
+                    "ORDER BY S.APELLIDO, S.NOMBRE", conn))
+                {
+                    cmd.Parameters.AddWithValue("@Busqueda", "%" + texto + "%");
+
+                    conn.Open();
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            lista.Add(SocioMapper.Map(dr));
+                        }
+                    }
+                }
+
+                return lista;
+            }
+            catch (SqlException ex)
+            {
+                throw new AccesoDatosException(
+                    "Error al buscar socios.", ex);
+            }
+        }
+
         public Socio? ObtenerPorId(int id)
         {
             try

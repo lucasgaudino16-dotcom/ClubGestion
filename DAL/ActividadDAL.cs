@@ -66,5 +66,85 @@ namespace DAL
                 throw new AccesoDatosException("Error al contar los inscriptos.", ex);
             }
         }
+        public void Insertar(Actividad actividad)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Conexion.Cadena))
+                using (var cmd = new SqlCommand(
+                    @"INSERT INTO ACTIVIDAD (NOMBRE, ARANCEL, CUPO)
+              VALUES (@Nombre, @Arancel, @Cupo)", conn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", actividad.Nombre);
+                    cmd.Parameters.AddWithValue("@Arancel", actividad.Arancel);
+                    cmd.Parameters.AddWithValue("@Cupo", actividad.Cupo);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new AccesoDatosException(
+                    "Error al registrar la actividad.", ex);
+            }
+        }
+        public void Modificar(Actividad actividad)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Conexion.Cadena))
+                using (var cmd = new SqlCommand(
+                    @"UPDATE ACTIVIDAD
+              SET NOMBRE = @Nombre,
+                  ARANCEL = @Arancel,
+                  CUPO = @Cupo
+              WHERE ID_ACTIVIDAD = @Id", conn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", actividad.Nombre);
+                    cmd.Parameters.AddWithValue("@Arancel", actividad.Arancel);
+                    cmd.Parameters.AddWithValue("@Cupo", actividad.Cupo);
+                    cmd.Parameters.AddWithValue("@Id", actividad.Id);
+
+                    conn.Open();
+
+                    int filas = cmd.ExecuteNonQuery();
+
+                    if (filas == 0)
+                        throw new AccesoDatosException(
+                            "No se encontró la actividad que desea modificar.");
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new AccesoDatosException(
+                    "Error al modificar la actividad.", ex);
+            }
+        }
+        public void Eliminar(int idActividad)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Conexion.Cadena))
+                using (var cmd = new SqlCommand(
+                    "DELETE FROM ACTIVIDAD WHERE ID_ACTIVIDAD = @Id", conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", idActividad);
+
+                    conn.Open();
+
+                    int filas = cmd.ExecuteNonQuery();
+
+                    if (filas == 0)
+                        throw new AccesoDatosException(
+                            "No se encontró la actividad que desea eliminar.");
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new AccesoDatosException(
+                    "Error al eliminar la actividad.", ex);
+            }
+        }
     }
 }
