@@ -8,6 +8,7 @@ namespace BLL
     {
         private readonly InscripcionDAL _dal = new InscripcionDAL();
         private readonly ActividadDAL _actividadDal = new ActividadDAL();
+        private readonly SocioDAL _socioDal = new SocioDAL();
 
         public void Inscribir(Socio socio, List<Actividad> actividades)
         {
@@ -49,9 +50,40 @@ namespace BLL
         {
             try
             {
+                if (socio == null || socio.Id <= 0)
+                    throw new ReglaNegocioException("Elegí un socio.");
+                if (actividad == null || actividad.Id <= 0)
+                    throw new ReglaNegocioException("Elegí una actividad.");
                 if (!_dal.Existe(socio.Id, actividad.Id))
                     throw new ReglaNegocioException(socio + " no está inscripto en " + actividad.Nombre + ".");
-                _dal.Eliminar(socio.Id, actividad.Id);
+
+                using (var scope = new TransactionScope())
+                {
+                    _dal.Eliminar(socio.Id, actividad.Id);
+                    scope.Complete();
+                }
+            }
+            catch (ReglaNegocioException) { throw; }
+            catch (AccesoDatosException) { throw; }
+            catch (Exception ex)
+            {
+                throw new Exception("Error inesperado al eliminar la inscripción.", ex);
+            }
+        }
+
+        public void Desinscribir(int idSocio, int idActividad)
+        {
+            try
+            {
+                var socio = _socioDal.ObtenerPorId(idSocio);
+                if (socio == null)
+                    throw new ReglaNegocioException("El socio no existe.");
+
+                var actividad = _actividadDal.ObtenerPorId(idActividad);
+                if (actividad == null)
+                    throw new ReglaNegocioException("La actividad no existe.");
+
+                Desinscribir(socio, actividad);
             }
             catch (ReglaNegocioException) { throw; }
             catch (AccesoDatosException) { throw; }

@@ -11,6 +11,7 @@ namespace ClubGestion
         private readonly InscripcionBLL _inscripcionBll = new InscripcionBLL();
         private int _idSeleccionado;
         private int _idActividadSeleccionada;
+        private int _idCategoriaSeleccionada;
 
         public Form1()
         {
@@ -21,10 +22,7 @@ namespace ClubGestion
         {
             try
             {
-                cboCategoria.DataSource = _categoriaBll.ObtenerTodas();
-                cboCategoria.DisplayMember = "Descripcion";
-                cboCategoria.ValueMember = "Id";
-
+                CargarCategorias();
                 CargarActividades();
                 CargarSocios();
                 CargarInscriptos();
@@ -35,16 +33,44 @@ namespace ClubGestion
             }
         }
 
+        private void CargarCategorias()
+        {
+            var categorias = _categoriaBll.ObtenerTodas();
+            var elegida = cboCategoria.SelectedItem is Categoria c ? c.Id : 0;
+
+            dgvCategorias.DataSource = null;
+            dgvCategorias.DataSource = categorias;
+            if (dgvCategorias.Columns["Id"] != null) dgvCategorias.Columns["Id"].Visible = false;
+            if (dgvCategorias.Columns["CuotaBase"] != null)
+            {
+                dgvCategorias.Columns["CuotaBase"].HeaderText = "Cuota base";
+                dgvCategorias.Columns["CuotaBase"].DefaultCellStyle.Format = "N2";
+            }
+
+            cboCategoria.DataSource = null;
+            cboCategoria.DataSource = categorias.ToList();
+            cboCategoria.DisplayMember = "Descripcion";
+            cboCategoria.ValueMember = "Id";
+
+            if (elegida > 0 && categorias.Any(x => x.Id == elegida))
+                cboCategoria.SelectedValue = elegida;
+        }
+
         private void CargarSocios()
         {
             var socios = _socioBll.ObtenerTodos();
-            dgvSocios.DataSource = null;
-            dgvSocios.DataSource = socios;
-            if (dgvSocios.Columns["Id"] != null) dgvSocios.Columns["Id"].Visible = false;
+            MostrarSocios(socios);
 
             cboSocio.DataSource = socios.Where(s => s.Activo).ToList();
             cboSocio.DisplayMember = "Apellido";
             cboSocio.ValueMember = "Id";
+        }
+
+        private void MostrarSocios(List<Socio> socios)
+        {
+            dgvSocios.DataSource = null;
+            dgvSocios.DataSource = socios;
+            if (dgvSocios.Columns["Id"] != null) dgvSocios.Columns["Id"].Visible = false;
         }
 
         private void CargarActividades()
@@ -79,6 +105,8 @@ namespace ClubGestion
             }
             dgvInscriptos.DataSource = null;
             dgvInscriptos.DataSource = _inscripcionBll.ObtenerPorActividad(actividad.Id);
+            if (dgvInscriptos.Columns["IdSocio"] != null) dgvInscriptos.Columns["IdSocio"].Visible = false;
+            if (dgvInscriptos.Columns["IdActividad"] != null) dgvInscriptos.Columns["IdActividad"].Visible = false;
             lblCupos.Text = "Cupos libres: " + _actividadBll.CuposLibres(actividad) + " de " + actividad.Cupo;
         }
 
@@ -181,6 +209,28 @@ namespace ClubGestion
             Limpiar();
         }
 
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var socios = _socioBll.Buscar(txtBuscar.Text);
+                MostrarSocios(socios);
+                if (socios.Count == 0)
+                    MessageBox.Show("No se encontraron socios con ese apellido, nombre o DNI.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter) return;
+            e.SuppressKeyPress = true;
+            btnBuscar_Click(sender, e);
+        }
+
         private void dgvSocios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -195,6 +245,112 @@ namespace ClubGestion
                 txtTelefono.Text = socio.Telefono ?? string.Empty;
                 chkActivo.Checked = socio.Activo;
                 cboCategoria.SelectedValue = socio.Categoria.Id;
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private Categoria LeerCategoria()
+        {
+            return new Categoria
+            {
+                Id = _idCategoriaSeleccionada,
+                Descripcion = txtDescripcionCat.Text,
+                CuotaBase = nudCuotaBase.Value
+            };
+        }
+
+        private void LimpiarCategoria()
+        {
+            _idCategoriaSeleccionada = 0;
+            txtDescripcionCat.Clear();
+            nudCuotaBase.Value = 0;
+            dgvCategorias.ClearSelection();
+            txtDescripcionCat.Focus();
+        }
+
+        private void btnCatAgregar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var categoria = LeerCategoria();
+                categoria.Id = 0;
+                _categoriaBll.Insertar(categoria);
+                MessageBox.Show("Categoría registrada.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarCategorias();
+                LimpiarCategoria();
+            }
+            catch (ReglaNegocioException ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnCatModificar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_idCategoriaSeleccionada == 0)
+                    throw new ReglaNegocioException("Elegí una categoría de la grilla.");
+                _categoriaBll.Modificar(LeerCategoria());
+                MessageBox.Show("Categoría modificada.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarCategorias();
+                CargarSocios();
+                LimpiarCategoria();
+            }
+            catch (ReglaNegocioException ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnCatEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_idCategoriaSeleccionada == 0)
+                    throw new ReglaNegocioException("Elegí una categoría de la grilla.");
+                if (MessageBox.Show("¿Eliminar la categoría seleccionada?", "Club", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+                _categoriaBll.Eliminar(_idCategoriaSeleccionada);
+                MessageBox.Show("Categoría eliminada.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarCategorias();
+                LimpiarCategoria();
+            }
+            catch (ReglaNegocioException ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnCatLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarCategoria();
+        }
+
+        private void dgvCategorias_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex < 0) return;
+                if (dgvCategorias.Rows[e.RowIndex].DataBoundItem is not Categoria categoria) return;
+                _idCategoriaSeleccionada = categoria.Id;
+                txtDescripcionCat.Text = categoria.Descripcion;
+                nudCuotaBase.Value = Math.Min(categoria.CuotaBase, nudCuotaBase.Maximum);
             }
             catch (Exception ex)
             {
@@ -323,6 +479,28 @@ namespace ClubGestion
                 _inscripcionBll.Inscribir(socio, actividades);
                 MessageBox.Show("Inscripción registrada.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 for (int i = 0; i < clbActividades.Items.Count; i++) clbActividades.SetItemChecked(i, false);
+                CargarInscriptos();
+            }
+            catch (ReglaNegocioException ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnDesinscribir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvInscriptos.CurrentRow == null || dgvInscriptos.CurrentRow.DataBoundItem is not InscripcionDTO inscripcion)
+                    throw new ReglaNegocioException("Elegí una inscripción de la grilla.");
+                if (MessageBox.Show("¿Dar de baja a " + inscripcion.Socio + " de " + inscripcion.Actividad + "?", "Club", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+                _inscripcionBll.Desinscribir(inscripcion.IdSocio, inscripcion.IdActividad);
+                MessageBox.Show("Inscripción dada de baja.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CargarInscriptos();
             }
             catch (ReglaNegocioException ex)

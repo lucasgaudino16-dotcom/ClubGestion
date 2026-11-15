@@ -6,6 +6,8 @@ namespace BLL
     {
         public static InscripcionDTO Map(Inscripcion i) => new InscripcionDTO
         {
+            IdSocio = i.Socio.Id,
+            IdActividad = i.Actividad.Id,
             Socio = i.Socio.ToString(),
             Dni = i.Socio.Dni,
             Categoria = i.Socio.Categoria.Descripcion,

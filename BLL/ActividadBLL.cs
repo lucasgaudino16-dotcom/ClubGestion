@@ -1,3 +1,4 @@
+using System.Transactions;
 using DAL;
 using Entity;
 
@@ -57,7 +58,12 @@ namespace BLL
                 Validar(a);
                 if (_dal.ExisteNombre(a.Nombre, 0))
                     throw new ReglaNegocioException("Ya existe una actividad llamada " + a.Nombre + ".");
-                a.Id = _dal.Insertar(a);
+
+                using (var scope = new TransactionScope())
+                {
+                    a.Id = _dal.Insertar(a);
+                    scope.Complete();
+                }
             }
             catch (ReglaNegocioException) { throw; }
             catch (AccesoDatosException) { throw; }
@@ -80,7 +86,11 @@ namespace BLL
                 if (a.Cupo < inscriptos)
                     throw new ReglaNegocioException("La actividad ya tiene " + inscriptos + " inscriptos: el cupo no puede ser menor.");
 
-                _dal.Modificar(a);
+                using (var scope = new TransactionScope())
+                {
+                    _dal.Modificar(a);
+                    scope.Complete();
+                }
             }
             catch (ReglaNegocioException) { throw; }
             catch (AccesoDatosException) { throw; }
@@ -97,7 +107,12 @@ namespace BLL
                 var a = ObtenerPorId(id);
                 if (_dal.ContarInscriptos(id) > 0)
                     throw new ReglaNegocioException("No se puede eliminar " + a.Nombre + " porque tiene socios inscriptos.");
-                _dal.Eliminar(id);
+
+                using (var scope = new TransactionScope())
+                {
+                    _dal.Eliminar(id);
+                    scope.Complete();
+                }
             }
             catch (ReglaNegocioException) { throw; }
             catch (AccesoDatosException) { throw; }

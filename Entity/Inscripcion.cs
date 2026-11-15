@@ -10,6 +10,8 @@ namespace Entity
 
     public class InscripcionDTO
     {
+        public int IdSocio { get; set; }
+        public int IdActividad { get; set; }
         public string Socio { get; set; } = string.Empty;
         public string Dni { get; set; } = string.Empty;
         public string Categoria { get; set; } = string.Empty;

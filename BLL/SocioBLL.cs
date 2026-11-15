@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using System.Transactions;
 using DAL;
 using Entity;
 
@@ -19,6 +20,22 @@ namespace BLL
             catch (Exception ex)
             {
                 throw new Exception("Error inesperado al consultar los socios.", ex);
+            }
+        }
+
+        public List<Socio> Buscar(string texto)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(texto))
+                    return _dal.ObtenerTodos();
+
+                return _dal.Buscar(texto.Trim());
+            }
+            catch (AccesoDatosException) { throw; }
+            catch (Exception ex)
+            {
+                throw new Exception("Error inesperado al buscar socios.", ex);
             }
         }
 
@@ -47,7 +64,12 @@ namespace BLL
                 if (_dal.ExisteDni(s.Dni, 0))
                     throw new ReglaNegocioException("Ya existe un socio con el DNI " + s.Dni + ".");
                 s.FechaAlta = DateTime.Now;
-                s.Id = _dal.Insertar(s);
+
+                using (var scope = new TransactionScope())
+                {
+                    s.Id = _dal.Insertar(s);
+                    scope.Complete();
+                }
             }
             catch (ReglaNegocioException) { throw; }
             catch (AccesoDatosException) { throw; }
@@ -65,7 +87,12 @@ namespace BLL
                 Validar(s);
                 if (_dal.ExisteDni(s.Dni, s.Id))
                     throw new ReglaNegocioException("Ya existe otro socio con el DNI " + s.Dni + ".");
-                _dal.Modificar(s);
+
+                using (var scope = new TransactionScope())
+                {
+                    _dal.Modificar(s);
+                    scope.Complete();
+                }
             }
             catch (ReglaNegocioException) { throw; }
             catch (AccesoDatosException) { throw; }
@@ -82,7 +109,12 @@ namespace BLL
                 ObtenerPorId(id);
                 if (_inscripcionDal.ObtenerPorSocio(id).Count > 0)
                     throw new ReglaNegocioException("El socio tiene inscripciones. Dalo de baja en lugar de eliminarlo.");
-                _dal.Eliminar(id);
+
+                using (var scope = new TransactionScope())
+                {
+                    _dal.Eliminar(id);
+                    scope.Complete();
+                }
             }
             catch (ReglaNegocioException) { throw; }
             catch (AccesoDatosException) { throw; }

@@ -19,6 +19,9 @@
         {
             tabControl = new TabControl();
             tabSocios = new TabPage();
+            lblBuscar = new Label();
+            txtBuscar = new TextBox();
+            btnBuscar = new Button();
             dgvSocios = new DataGridView();
             grpSocio = new GroupBox();
             lblNombre = new Label();
@@ -38,6 +41,17 @@
             btnModificar = new Button();
             btnEliminar = new Button();
             btnLimpiar = new Button();
+            tabCategorias = new TabPage();
+            dgvCategorias = new DataGridView();
+            grpCategoria = new GroupBox();
+            lblDescripcionCat = new Label();
+            txtDescripcionCat = new TextBox();
+            lblCuotaBase = new Label();
+            nudCuotaBase = new NumericUpDown();
+            btnCatAgregar = new Button();
+            btnCatModificar = new Button();
+            btnCatEliminar = new Button();
+            btnCatLimpiar = new Button();
             tabActividades = new TabPage();
             dgvActividades = new DataGridView();
             grpActividad = new GroupBox();
@@ -63,10 +77,15 @@
             cboActividadVer = new ComboBox();
             lblCupos = new Label();
             dgvInscriptos = new DataGridView();
+            btnDesinscribir = new Button();
             tabControl.SuspendLayout();
             tabSocios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSocios).BeginInit();
             grpSocio.SuspendLayout();
+            tabCategorias.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
+            grpCategoria.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudCuotaBase).BeginInit();
             tabActividades.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvActividades).BeginInit();
             grpActividad.SuspendLayout();
@@ -81,6 +100,7 @@
             // tabControl
             //
             tabControl.Controls.Add(tabSocios);
+            tabControl.Controls.Add(tabCategorias);
             tabControl.Controls.Add(tabActividades);
             tabControl.Controls.Add(tabInscripciones);
             tabControl.Dock = DockStyle.Fill;
@@ -92,6 +112,9 @@
             //
             // tabSocios
             //
+            tabSocios.Controls.Add(lblBuscar);
+            tabSocios.Controls.Add(txtBuscar);
+            tabSocios.Controls.Add(btnBuscar);
             tabSocios.Controls.Add(dgvSocios);
             tabSocios.Controls.Add(grpSocio);
             tabSocios.Location = new Point(4, 24);
@@ -102,6 +125,34 @@
             tabSocios.Text = "Socios";
             tabSocios.UseVisualStyleBackColor = true;
             //
+            // lblBuscar
+            //
+            lblBuscar.AutoSize = true;
+            lblBuscar.Location = new Point(6, 186);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(190, 15);
+            lblBuscar.TabIndex = 1;
+            lblBuscar.Text = "Buscar por apellido, nombre o DNI";
+            //
+            // txtBuscar
+            //
+            txtBuscar.Location = new Point(202, 182);
+            txtBuscar.MaxLength = 50;
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(260, 23);
+            txtBuscar.TabIndex = 2;
+            txtBuscar.KeyDown += txtBuscar_KeyDown;
+            //
+            // btnBuscar
+            //
+            btnBuscar.Location = new Point(468, 180);
+            btnBuscar.Name = "btnBuscar";
+            btnBuscar.Size = new Size(100, 27);
+            btnBuscar.TabIndex = 3;
+            btnBuscar.Text = "Buscar";
+            btnBuscar.UseVisualStyleBackColor = true;
+            btnBuscar.Click += btnBuscar_Click;
+            //
             // dgvSocios
             //
             dgvSocios.AllowUserToAddRows = false;
@@ -109,13 +160,13 @@
             dgvSocios.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSocios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvSocios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSocios.Location = new Point(6, 180);
+            dgvSocios.Location = new Point(6, 214);
             dgvSocios.MultiSelect = false;
             dgvSocios.Name = "dgvSocios";
             dgvSocios.ReadOnly = true;
             dgvSocios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSocios.Size = new Size(964, 397);
-            dgvSocios.TabIndex = 1;
+            dgvSocios.Size = new Size(964, 363);
+            dgvSocios.TabIndex = 4;
             dgvSocios.CellClick += dgvSocios_CellClick;
             //
             // grpSocio
@@ -300,6 +351,130 @@
             btnLimpiar.UseVisualStyleBackColor = true;
             btnLimpiar.Click += btnLimpiar_Click;
             //
+            // tabCategorias
+            //
+            tabCategorias.Controls.Add(dgvCategorias);
+            tabCategorias.Controls.Add(grpCategoria);
+            tabCategorias.Location = new Point(4, 24);
+            tabCategorias.Name = "tabCategorias";
+            tabCategorias.Padding = new Padding(3);
+            tabCategorias.Size = new Size(976, 583);
+            tabCategorias.TabIndex = 1;
+            tabCategorias.Text = "Categorías";
+            tabCategorias.UseVisualStyleBackColor = true;
+            //
+            // dgvCategorias
+            //
+            dgvCategorias.AllowUserToAddRows = false;
+            dgvCategorias.AllowUserToDeleteRows = false;
+            dgvCategorias.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvCategorias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCategorias.Location = new Point(6, 130);
+            dgvCategorias.MultiSelect = false;
+            dgvCategorias.Name = "dgvCategorias";
+            dgvCategorias.ReadOnly = true;
+            dgvCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCategorias.Size = new Size(964, 447);
+            dgvCategorias.TabIndex = 1;
+            dgvCategorias.CellClick += dgvCategorias_CellClick;
+            //
+            // grpCategoria
+            //
+            grpCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grpCategoria.Controls.Add(lblDescripcionCat);
+            grpCategoria.Controls.Add(txtDescripcionCat);
+            grpCategoria.Controls.Add(lblCuotaBase);
+            grpCategoria.Controls.Add(nudCuotaBase);
+            grpCategoria.Controls.Add(btnCatAgregar);
+            grpCategoria.Controls.Add(btnCatModificar);
+            grpCategoria.Controls.Add(btnCatEliminar);
+            grpCategoria.Controls.Add(btnCatLimpiar);
+            grpCategoria.Location = new Point(6, 6);
+            grpCategoria.Name = "grpCategoria";
+            grpCategoria.Size = new Size(964, 118);
+            grpCategoria.TabIndex = 0;
+            grpCategoria.TabStop = false;
+            grpCategoria.Text = "Datos de la categoría";
+            //
+            // lblDescripcionCat
+            //
+            lblDescripcionCat.AutoSize = true;
+            lblDescripcionCat.Location = new Point(16, 28);
+            lblDescripcionCat.Name = "lblDescripcionCat";
+            lblDescripcionCat.Size = new Size(69, 15);
+            lblDescripcionCat.TabIndex = 0;
+            lblDescripcionCat.Text = "Descripción";
+            //
+            // txtDescripcionCat
+            //
+            txtDescripcionCat.Location = new Point(16, 46);
+            txtDescripcionCat.MaxLength = 50;
+            txtDescripcionCat.Name = "txtDescripcionCat";
+            txtDescripcionCat.Size = new Size(300, 23);
+            txtDescripcionCat.TabIndex = 1;
+            //
+            // lblCuotaBase
+            //
+            lblCuotaBase.AutoSize = true;
+            lblCuotaBase.Location = new Point(332, 28);
+            lblCuotaBase.Name = "lblCuotaBase";
+            lblCuotaBase.Size = new Size(110, 15);
+            lblCuotaBase.TabIndex = 2;
+            lblCuotaBase.Text = "Cuota base mensual";
+            //
+            // nudCuotaBase
+            //
+            nudCuotaBase.DecimalPlaces = 2;
+            nudCuotaBase.Increment = new decimal(new int[] { 500, 0, 0, 0 });
+            nudCuotaBase.Location = new Point(332, 46);
+            nudCuotaBase.Maximum = new decimal(new int[] { 99999999, 0, 0, 0 });
+            nudCuotaBase.Name = "nudCuotaBase";
+            nudCuotaBase.Size = new Size(140, 23);
+            nudCuotaBase.TabIndex = 3;
+            nudCuotaBase.ThousandsSeparator = true;
+            nudCuotaBase.TextAlign = HorizontalAlignment.Right;
+            //
+            // btnCatAgregar
+            //
+            btnCatAgregar.Location = new Point(16, 82);
+            btnCatAgregar.Name = "btnCatAgregar";
+            btnCatAgregar.Size = new Size(100, 27);
+            btnCatAgregar.TabIndex = 4;
+            btnCatAgregar.Text = "Agregar";
+            btnCatAgregar.UseVisualStyleBackColor = true;
+            btnCatAgregar.Click += btnCatAgregar_Click;
+            //
+            // btnCatModificar
+            //
+            btnCatModificar.Location = new Point(122, 82);
+            btnCatModificar.Name = "btnCatModificar";
+            btnCatModificar.Size = new Size(100, 27);
+            btnCatModificar.TabIndex = 5;
+            btnCatModificar.Text = "Modificar";
+            btnCatModificar.UseVisualStyleBackColor = true;
+            btnCatModificar.Click += btnCatModificar_Click;
+            //
+            // btnCatEliminar
+            //
+            btnCatEliminar.Location = new Point(228, 82);
+            btnCatEliminar.Name = "btnCatEliminar";
+            btnCatEliminar.Size = new Size(100, 27);
+            btnCatEliminar.TabIndex = 6;
+            btnCatEliminar.Text = "Eliminar";
+            btnCatEliminar.UseVisualStyleBackColor = true;
+            btnCatEliminar.Click += btnCatEliminar_Click;
+            //
+            // btnCatLimpiar
+            //
+            btnCatLimpiar.Location = new Point(334, 82);
+            btnCatLimpiar.Name = "btnCatLimpiar";
+            btnCatLimpiar.Size = new Size(100, 27);
+            btnCatLimpiar.TabIndex = 7;
+            btnCatLimpiar.Text = "Limpiar";
+            btnCatLimpiar.UseVisualStyleBackColor = true;
+            btnCatLimpiar.Click += btnCatLimpiar_Click;
+            //
             // tabActividades
             //
             tabActividades.Controls.Add(dgvActividades);
@@ -308,7 +483,7 @@
             tabActividades.Name = "tabActividades";
             tabActividades.Padding = new Padding(3);
             tabActividades.Size = new Size(976, 583);
-            tabActividades.TabIndex = 1;
+            tabActividades.TabIndex = 2;
             tabActividades.Text = "Actividades";
             tabActividades.UseVisualStyleBackColor = true;
             //
@@ -454,7 +629,7 @@
             tabInscripciones.Name = "tabInscripciones";
             tabInscripciones.Padding = new Padding(3);
             tabInscripciones.Size = new Size(976, 583);
-            tabInscripciones.TabIndex = 2;
+            tabInscripciones.TabIndex = 3;
             tabInscripciones.Text = "Inscripciones";
             tabInscripciones.UseVisualStyleBackColor = true;
             //
@@ -528,6 +703,7 @@
             grpInscriptos.Controls.Add(cboActividadVer);
             grpInscriptos.Controls.Add(lblCupos);
             grpInscriptos.Controls.Add(dgvInscriptos);
+            grpInscriptos.Controls.Add(btnDesinscribir);
             grpInscriptos.Location = new Point(332, 6);
             grpInscriptos.Name = "grpInscriptos";
             grpInscriptos.Size = new Size(638, 571);
@@ -575,8 +751,19 @@
             dgvInscriptos.Name = "dgvInscriptos";
             dgvInscriptos.ReadOnly = true;
             dgvInscriptos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvInscriptos.Size = new Size(606, 475);
+            dgvInscriptos.Size = new Size(606, 440);
             dgvInscriptos.TabIndex = 3;
+            //
+            // btnDesinscribir
+            //
+            btnDesinscribir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnDesinscribir.Location = new Point(16, 532);
+            btnDesinscribir.Name = "btnDesinscribir";
+            btnDesinscribir.Size = new Size(180, 27);
+            btnDesinscribir.TabIndex = 4;
+            btnDesinscribir.Text = "Dar de baja la inscripción";
+            btnDesinscribir.UseVisualStyleBackColor = true;
+            btnDesinscribir.Click += btnDesinscribir_Click;
             //
             // Form1
             //
@@ -591,9 +778,15 @@
             Load += Form1_Load;
             tabControl.ResumeLayout(false);
             tabSocios.ResumeLayout(false);
+            tabSocios.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSocios).EndInit();
             grpSocio.ResumeLayout(false);
             grpSocio.PerformLayout();
+            tabCategorias.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();
+            grpCategoria.ResumeLayout(false);
+            grpCategoria.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudCuotaBase).EndInit();
             tabActividades.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvActividades).EndInit();
             grpActividad.ResumeLayout(false);
@@ -613,6 +806,9 @@
 
         private TabControl tabControl;
         private TabPage tabSocios;
+        private Label lblBuscar;
+        private TextBox txtBuscar;
+        private Button btnBuscar;
         private DataGridView dgvSocios;
         private GroupBox grpSocio;
         private Label lblNombre;
@@ -632,6 +828,17 @@
         private Button btnModificar;
         private Button btnEliminar;
         private Button btnLimpiar;
+        private TabPage tabCategorias;
+        private DataGridView dgvCategorias;
+        private GroupBox grpCategoria;
+        private Label lblDescripcionCat;
+        private TextBox txtDescripcionCat;
+        private Label lblCuotaBase;
+        private NumericUpDown nudCuotaBase;
+        private Button btnCatAgregar;
+        private Button btnCatModificar;
+        private Button btnCatEliminar;
+        private Button btnCatLimpiar;
         private TabPage tabActividades;
         private DataGridView dgvActividades;
         private GroupBox grpActividad;
@@ -657,5 +864,6 @@
         private ComboBox cboActividadVer;
         private Label lblCupos;
         private DataGridView dgvInscriptos;
+        private Button btnDesinscribir;
     }
 }
