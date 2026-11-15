@@ -12,6 +12,17 @@ Aplicación de escritorio para un club de barrio: socios con su categoría, acti
 
 Requisitos: Visual Studio 2022 con la carga de trabajo "Desarrollo de escritorio de .NET" (incluye .NET 8 y LocalDB).
 
+## Qué hace
+
+| Pestaña | Funciones |
+|---|---|
+| Socios | Alta, modificación, baja lógica (Activo) y eliminación; búsqueda por apellido, nombre o DNI. |
+| Categorías | ABM de categorías con su cuota base mensual. No se elimina una categoría con socios. |
+| Actividades | ABM de actividades con arancel y cupo. El cupo no baja de los inscriptos; no se elimina una actividad con inscriptos. |
+| Inscripciones | Inscribir a un socio en una o varias actividades **en una sola transacción**; ver inscriptos y cupos libres por actividad; dar de baja una inscripción. |
+
+Las reglas de negocio completas, el modelo de datos y el manual de usuario están en `docs\ClubGestion - Documentacion del TP Integrador.pdf`.
+
 ## Estructura
 
 ```
@@ -20,7 +31,8 @@ ClubGestion.sln
 ├─ MAPPER/        Convierte filas (IDataRecord) en objetos. Referencia a Entity.
 ├─ DAL/           Acceso a datos con Microsoft.Data.SqlClient. Referencia a Entity y MAPPER.
 ├─ BLL/           Reglas de negocio y transacciones de negocio. Referencia a Entity y DAL.
-├─ ClubGestion/   Windows Forms. Usa solo BLL y Entity (DAL y MAPPER se referencian para que copien sus dll).
+├─ ClubGestion/   Windows Forms. Usa solo BLL y Entity.
+├─ docs/          Documentación del TP (PDF), diagramas (HTML y PNG), capturas y consigna.
 └─ script_base_de_datos.sql
 ```
 
@@ -39,21 +51,33 @@ Modelo:
 - `BLL`: **todo** método público con `try/catch`, aunque solo delegue. Regla rota → `throw new ReglaNegocioException("...")`. Los `catch` relanzan con `throw;` (nunca `throw ex;`) y el último envuelve lo inesperado en `new Exception("Error inesperado al ...", ex)`.
 - `UI`: `Form1_Load`, cada botón y `CellClick` con `try/catch`. `ReglaNegocioException` se muestra como aviso; el resto con `MostrarError`, que agrega el detalle del `InnerException`. La UI no referencia a la DAL en el código ni atrapa `SqlException`.
 
-**Transacciones**: `TransactionScope` en la BLL (`InscripcionBLL.Inscribir`). Las conexiones se abren adentro del `using`, una por vez; `scope.Complete()` es la última línea. Cada método de la DAL abre y cierra su propia conexión y no recibe conexión ni transacción por parámetro.
+**Transacciones**: `TransactionScope` en la BLL en toda operación que escribe en la base. `InscripcionBLL.Inscribir` es la transacción de negocio: N inscripciones entran juntas o no entra ninguna. Las conexiones se abren adentro del `using`, una por vez; `scope.Complete()` es la última línea. Cada método de la DAL abre y cierra su propia conexión y no recibe conexión ni transacción por parámetro.
 
 **Mapper**: clases estáticas en el proyecto `MAPPER`. Reciben `IDataRecord`, así sirven para `SqlDataReader` y para un `DataTable` (`MapLista`). El mapper de la entidad principal reutiliza el de la relacionada con las columnas del JOIN (`SocioMapper` llama a `CategoriaMapper`). Las columnas homónimas llevan alias en el SELECT (`DESCRIPCION AS CATEGORIA`, `NOMBRE AS ACTIVIDAD`). El mapper de entidad a DTO va en la BLL (`InscripcionDTOMapper`).
 
 **Acceso a datos**: `SqlParameter` para todo dato del usuario, `using` en conexiones, comandos y readers, `OUTPUT INSERTED.ID` para recuperar el identity, cadena `MiConexion` en `App.config` leída por `DAL\Conexion.cs`.
 
-**Código**: sin comentarios, nombres en castellano, controles `txt`, `cbo`, `dgv`, `btn`, `lbl`, `grp`, `chk`, `clb`. El formulario se edita desde el diseñador de Visual Studio.
+**Código**: sin comentarios, nombres en castellano, controles `txt`, `cbo`, `dgv`, `btn`, `lbl`, `grp`, `chk`, `clb`, `nud`. El formulario se edita desde el diseñador de Visual Studio.
 
-**Base**: el script crea todo con `IF ... IS NULL`, tiene datos en todas las tablas y se puede correr dos veces. Plata en `DECIMAL(10,2)`. Antes de entregar, probarlo en una base vacía.
+**Base**: el script crea todo con `IF ... IS NULL`, tiene datos en todas las tablas y se puede correr dos veces. Plata en `DECIMAL(10,2)`.
+
+## Cómo probarlo antes de entregar
+
+- Compilar la solución: 0 errores y 0 advertencias.
+- Correr el script en una base vacía y abrir la app: las cuatro pestañas cargan con datos.
+- Transacción: en Inscripciones elegir a Luna, tildar Yoga y Ajedrez (Ajedrez tiene cupo 2 y ya está lleno) e Inscribir. Tiene que salir "No quedan cupos en Ajedrez. No se registró ninguna inscripción." y Luna **no** tiene que aparecer en Yoga.
+- Reglas: DNI repetido, eliminar la categoría Activo, bajar el cupo de Ajedrez a 1, eliminar Ajedrez. Todas tienen que salir como aviso, no como error.
+
+## Documentación
+
+- `docs\ClubGestion - Documentacion del TP Integrador.pdf`: carátula, descripción del sistema, reglas, transacciones, arquitectura, diagrama de base de datos, diagrama de clases y manual de usuario con capturas. Se genera desde el `.html` del mismo nombre.
+- `docs\diagramas\`: los diagramas en HTML (editables) y en `docs\img\` las versiones PNG.
+- `docs\CONSIGNA.md`: la consigna del campus y cómo la cubre el proyecto.
 
 ## Cómo trabajamos
 
-- Una rama por pantalla o tarea (`feature/abm-actividades`), Pull Request a `main`, otro integrante revisa con el checklist de abajo antes de mergear.
+- Una rama por pantalla o tarea, Pull Request a `main`, otro integrante revisa con el checklist de abajo antes de mergear.
 - Antes de cada PR: `Recompilar solución` con 0 errores y 0 advertencias, la app abre con datos y la pantalla nueva funciona contra el script actual.
-- Si tocás el script, tiene que seguir corriendo dos veces en una base vacía.
 - Las tareas están en el tablero de Trello del grupo.
 
 Checklist de revisión de un PR:
@@ -62,18 +86,5 @@ Checklist de revisión de un PR:
 - [ ] Cada método de la DAL atrapa `SqlException` y la traduce.
 - [ ] Ninguna FK quedó como `int` en una entidad.
 - [ ] Todo dato que escribe en la base va por `SqlParameter`.
-- [ ] Si la operación escribe más de una fila o tabla, está dentro de un `TransactionScope` en la BLL.
+- [ ] Toda operación que escribe está dentro de un `TransactionScope` en la BLL.
 - [ ] El evento de la UI tiene `try/catch` y la grilla se refresca después de la operación.
-
-## Documentación
-
-- [docs/DESCRIPCION-DEL-SISTEMA.md](docs/DESCRIPCION-DEL-SISTEMA.md) — **empezá por acá.** Qué hace el sistema, qué queda afuera, los cuatro conceptos del negocio, las reglas, las transacciones y para qué sirve cada capa. Sin código. Es el punto 1 de la documentación de la entrega y la base de la presentación del negocio.
-- [docs/CONSIGNA.md](docs/CONSIGNA.md) — la consigna del campus copiada, con una tabla de qué entrega cubre cada parte del proyecto.
-
-Son cinco entregas parciales (negocio, base de datos, solución en capas sin persistir, solución con persistencia, final con transacciones de negocio y defensa oral) más un documento con carátula, diagrama de base de datos, diagrama de clases y manual de usuario. Git y Trello suman puntos.
-
-Falta: diagrama de base de datos, diagrama de clases y manual de usuario.
-
-## Pendiente
-
-Ver el tablero de Trello. A grandes rasgos: ABM de actividades, ABM de categorías, baja de inscripciones desde la UI, pagos de cuotas e inscripciones en una sola transacción, reportes (inscriptos por actividad y recaudación), validaciones con expresiones regulares, controles de usuario reutilizables y lo que pida la consigna del campus.

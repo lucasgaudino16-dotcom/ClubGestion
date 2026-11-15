@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Diagrama de clases - ClubGestion</title>
+<style>
+  body { margin: 0; background: #fff; font-family: "Segoe UI", Arial, sans-serif; }
+  .lienzo { position: relative; width: 1500px; height: 1050px; }
+  .capa { position: absolute; top: 56px; height: 950px; border: 2px dashed #9aa7b8; border-radius: 10px; background: #f7f9fc; }
+  .capa > span { position: absolute; top: -14px; left: 14px; background: #fff; padding: 0 8px; font-weight: 700; color: #1f3a5f; font-size: 15px; }
+  .capa > em { position: absolute; top: 10px; left: 14px; right: 14px; font-size: 11px; color: #667; font-style: normal; }
+  .clase { position: absolute; width: 226px; border: 1.5px solid #1f3a5f; border-radius: 4px; background: #fff; font-size: 11.5px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  .clase h4 { margin: 0; padding: 5px 8px; background: #e8eef7; border-bottom: 1.5px solid #1f3a5f; font-size: 12.5px; text-align: center; }
+  .clase h4 small { display: block; font-weight: 400; color: #556; font-size: 10px; }
+  .clase ul { list-style: none; margin: 0; padding: 4px 8px; }
+  .clase ul + ul { border-top: 1px solid #cfd8e3; }
+  .clase li { padding: 1px 0; white-space: normal; word-break: break-word; font-family: Consolas, monospace; font-size: 10.5px; }
+  .clase.exc h4 { background: #fdecea; }
+  .clase.dto h4 { background: #eef7ee; }
+  svg { position: absolute; left: 0; top: 0; pointer-events: none; }
+  .titulo { position: absolute; left: 20px; top: 12px; font-size: 18px; font-weight: 600; color: #1f3a5f; }
+  .dep { font-size: 11px; fill: #1f3a5f; font-weight: 700; }
+  .leyenda { position: absolute; left: 20px; top: 1016px; font-size: 12px; color: #555; }
+</style>
+</head>
+<body>
+<div class="lienzo">
+  <div class="titulo">ClubGestion · Diagrama de clases por capa (las flechas van siempre hacia abajo en la arquitectura: UI → BLL → DAL → MAPPER → Entity)</div>
+
+  <div class="capa" style="left:20px; width:250px;"><span>UI (Windows Forms)</span><em>Proyecto ClubGestion. Referencia a BLL y Entity.</em></div>
+  <div class="capa" style="left:290px; width:250px;"><span>BLL</span><em>Reglas de negocio y TransactionScope. Referencia a DAL y Entity.</em></div>
+  <div class="capa" style="left:560px; width:250px;"><span>DAL</span><em>ADO.NET con Microsoft.Data.SqlClient. Referencia a MAPPER y Entity.</em></div>
+  <div class="capa" style="left:830px; width:250px;"><span>MAPPER</span><em>Fila (IDataRecord) → objeto. Referencia a Entity.</em></div>
+  <div class="capa" style="left:1100px; width:380px;"><span>Entity</span><em>Entidades y excepciones propias. No referencia a nadie.</em></div>
+
+  <!-- UI -->
+  <div class="clase" style="left:32px; top:120px;">
+    <h4>Form1<small>: Form</small></h4>
+    <ul><li>- _categoriaBll : CategoriaBLL</li><li>- _socioBll : SocioBLL</li><li>- _actividadBll : ActividadBLL</li><li>- _inscripcionBll : InscripcionBLL</li></ul>
+    <ul><li>- CargarCategorias()</li><li>- CargarSocios()</li><li>- CargarActividades()</li><li>- CargarInscriptos()</li><li>- btnAgregar_Click(...)</li><li>- btnBuscar_Click(...)</li><li>- btnCatAgregar_Click(...)</li><li>- btnActAgregar_Click(...)</li><li>- btnInscribir_Click(...)</li><li>- btnDesinscribir_Click(...)</li><li>- MostrarError(Exception)</li></ul>
+  </div>
+  <div class="clase" style="left:32px; top:430px;">
+    <h4>Program</h4>
+    <ul><li>+ Main() : void</li></ul>
+  </div>
+
+  <!-- BLL -->
+  <div class="clase" style="left:302px; top:100px;">
+    <h4>CategoriaBLL</h4>
+    <ul><li>- _dal : CategoriaDAL</li></ul>
+    <ul><li>+ ObtenerTodas() : List&lt;Categoria&gt;</li><li>+ ObtenerPorId(int) : Categoria</li><li>+ Insertar(Categoria)</li><li>+ Modificar(Categoria)</li><li>+ Eliminar(int)</li><li>- Validar(Categoria)</li></ul>
+  </div>
+  <div class="clase" style="left:302px; top:290px;">
+    <h4>SocioBLL</h4>
+    <ul><li>- _dal : SocioDAL</li><li>- _inscripcionDal : InscripcionDAL</li></ul>
+    <ul><li>+ ObtenerTodos() : List&lt;Socio&gt;</li><li>+ Buscar(string) : List&lt;Socio&gt;</li><li>+ ObtenerPorId(int) : Socio</li><li>+ Insertar(Socio)</li><li>+ Modificar(Socio)</li><li>+ Eliminar(int)</li><li>- Validar(Socio)</li></ul>
+  </div>
+  <div class="clase" style="left:302px; top:500px;">
+    <h4>ActividadBLL</h4>
+    <ul><li>- _dal : ActividadDAL</li></ul>
+    <ul><li>+ ObtenerTodas() : List&lt;Actividad&gt;</li><li>+ ObtenerPorId(int) : Actividad</li><li>+ CuposLibres(Actividad) : int</li><li>+ Insertar(Actividad)</li><li>+ Modificar(Actividad)</li><li>+ Eliminar(int)</li><li>- Validar(Actividad)</li></ul>
+  </div>
+  <div class="clase" style="left:302px; top:700px;">
+    <h4>InscripcionBLL</h4>
+    <ul><li>- _dal : InscripcionDAL</li><li>- _actividadDal : ActividadDAL</li><li>- _socioDal : SocioDAL</li></ul>
+    <ul><li>+ Inscribir(Socio, List&lt;Actividad&gt;) [TransactionScope]</li><li>+ Desinscribir(Socio, Actividad)</li><li>+ Desinscribir(int, int)</li><li>+ ObtenerPorActividad(int) : List&lt;InscripcionDTO&gt;</li><li>+ ObtenerPorSocio(int) : List&lt;InscripcionDTO&gt;</li></ul>
+  </div>
+  <div class="clase dto" style="left:302px; top:925px;">
+    <h4>InscripcionDTOMapper<small>static</small></h4>
+    <ul><li>+ Map(Inscripcion) : InscripcionDTO</li><li>+ Map(List&lt;Inscripcion&gt;) : List&lt;InscripcionDTO&gt;</li></ul>
+  </div>
+
+  <!-- DAL -->
+  <div class="clase" style="left:572px; top:100px;">
+    <h4>Conexion<small>static</small></h4>
+    <ul><li>+ Cadena : string  (App.config)</li></ul>
+  </div>
+  <div class="clase" style="left:572px; top:180px;">
+    <h4>CategoriaDAL</h4>
+    <ul><li>+ ObtenerTodas() : List&lt;Categoria&gt;</li><li>+ ObtenerPorId(int) : Categoria?</li><li>+ ExisteDescripcion(string, int) : bool</li><li>+ ContarSocios(int) : int</li><li>+ Insertar(Categoria) : int</li><li>+ Modificar(Categoria)</li><li>+ Eliminar(int)</li></ul>
+  </div>
+  <div class="clase" style="left:572px; top:350px;">
+    <h4>SocioDAL</h4>
+    <ul><li>+ ObtenerTodos() : List&lt;Socio&gt;</li><li>+ Buscar(string) : List&lt;Socio&gt;</li><li>+ ObtenerPorId(int) : Socio?</li><li>+ ExisteDni(string, int) : bool</li><li>+ Insertar(Socio) : int</li><li>+ Modificar(Socio)</li><li>+ Eliminar(int)</li></ul>
+  </div>
+  <div class="clase" style="left:572px; top:520px;">
+    <h4>ActividadDAL</h4>
+    <ul><li>+ ObtenerTodas() : List&lt;Actividad&gt;</li><li>+ ObtenerPorId(int) : Actividad?</li><li>+ ContarInscriptos(int) : int</li><li>+ ExisteNombre(string, int) : bool</li><li>+ Insertar(Actividad) : int</li><li>+ Modificar(Actividad)</li><li>+ Eliminar(int)</li></ul>
+  </div>
+  <div class="clase" style="left:572px; top:690px;">
+    <h4>InscripcionDAL</h4>
+    <ul><li>+ ObtenerPorActividad(int) : List&lt;Inscripcion&gt;</li><li>+ ObtenerPorSocio(int) : List&lt;Inscripcion&gt;</li><li>+ Existe(int, int) : bool</li><li>+ Insertar(int, int, DateTime, decimal)</li><li>+ Eliminar(int, int)</li></ul>
+  </div>
+
+  <!-- MAPPER -->
+  <div class="clase" style="left:842px; top:140px;">
+    <h4>CategoriaMapper<small>static</small></h4>
+    <ul><li>+ Map(IDataRecord) : Categoria</li><li>+ MapLista(DataTable) : List&lt;Categoria&gt;</li></ul>
+  </div>
+  <div class="clase" style="left:842px; top:320px;">
+    <h4>SocioMapper<small>static</small></h4>
+    <ul><li>+ Map(IDataRecord) : Socio</li><li>+ CargarParametros(SqlCommand, Socio)</li></ul>
+  </div>
+  <div class="clase" style="left:842px; top:520px;">
+    <h4>ActividadMapper<small>static</small></h4>
+    <ul><li>+ Map(IDataRecord) : Actividad</li></ul>
+  </div>
+  <div class="clase" style="left:842px; top:690px;">
+    <h4>InscripcionMapper<small>static</small></h4>
+    <ul><li>+ Map(IDataRecord) : Inscripcion</li></ul>
+  </div>
+
+  <!-- Entity -->
+  <div class="clase" style="left:1112px; top:100px; width:170px;">
+    <h4>Categoria</h4>
+    <ul><li>+ Id : int</li><li>+ Descripcion : string</li><li>+ CuotaBase : decimal</li></ul>
+    <ul><li>+ ToString()</li></ul>
+  </div>
+  <div class="clase" style="left:1112px; top:280px; width:170px;">
+    <h4>Socio</h4>
+    <ul><li>+ Id : int</li><li>+ Nombre : string</li><li>+ Apellido : string</li><li>+ Dni : string</li><li>+ Email : string</li><li>+ Telefono : string?</li><li>+ FechaAlta : DateTime</li><li>+ Activo : bool</li><li>◆ Categoria : Categoria</li></ul>
+    <ul><li>+ ToString()</li></ul>
+  </div>
+  <div class="clase" style="left:1112px; top:560px; width:170px;">
+    <h4>Actividad</h4>
+    <ul><li>+ Id : int</li><li>+ Nombre : string</li><li>+ Arancel : decimal</li><li>+ Cupo : int</li></ul>
+    <ul><li>+ ToString()</li></ul>
+  </div>
+  <div class="clase" style="left:1300px; top:420px; width:170px;">
+    <h4>Inscripcion</h4>
+    <ul><li>◆ Socio : Socio</li><li>◆ Actividad : Actividad</li><li>+ FechaInscripcion : DateTime</li><li>+ ArancelAplicado : decimal</li></ul>
+  </div>
+  <div class="clase dto" style="left:1300px; top:600px; width:170px;">
+    <h4>InscripcionDTO</h4>
+    <ul><li>+ IdSocio : int</li><li>+ IdActividad : int</li><li>+ Socio : string</li><li>+ Dni : string</li><li>+ Categoria : string</li><li>+ Actividad : string</li><li>+ Fecha : DateTime</li><li>+ Arancel : decimal</li></ul>
+  </div>
+  <div class="clase exc" style="left:1112px; top:760px; width:170px;">
+    <h4>ReglaNegocioException<small>: Exception</small></h4>
+    <ul><li>+ ReglaNegocioException(string)</li></ul>
+  </div>
+  <div class="clase exc" style="left:1300px; top:800px; width:170px;">
+    <h4>AccesoDatosException<small>: Exception</small></h4>
+    <ul><li>+ AccesoDatosException(string)</li><li>+ AccesoDatosException(string, Exception inner)</li></ul>
+  </div>
+
+  <svg width="1500" height="1050">
+    <defs>
+      <marker id="flecha" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,1 L9,5 L0,9" fill="none" stroke="#1f3a5f" stroke-width="1.5"/></marker>
+      <marker id="rombo" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1,6 L6,2 L11,6 L6,10 Z" fill="#1f3a5f" stroke="#1f3a5f"/></marker>
+    </defs>
+    <!-- dependencias entre capas -->
+    <line x1="270" y1="80" x2="290" y2="80" stroke="#1f3a5f" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="540" y1="80" x2="560" y2="80" stroke="#1f3a5f" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="810" y1="80" x2="830" y2="80" stroke="#1f3a5f" stroke-width="2" marker-end="url(#flecha)"/>
+    <line x1="1080" y1="80" x2="1100" y2="80" stroke="#1f3a5f" stroke-width="2" marker-end="url(#flecha)"/>
+    <text x="150" y="980" class="dep" text-anchor="middle">usa →</text>
+    <!-- Form1 usa las 4 BLL -->
+    <line x1="258" y1="200" x2="302" y2="150" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="258" y1="220" x2="302" y2="350" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="258" y1="240" x2="302" y2="560" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="258" y1="260" x2="302" y2="760" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <!-- BLL -> DAL -->
+    <line x1="528" y1="150" x2="572" y2="240" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="528" y1="350" x2="572" y2="410" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="528" y1="560" x2="572" y2="580" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="528" y1="760" x2="572" y2="740" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <!-- DAL -> MAPPER -->
+    <line x1="798" y1="240" x2="842" y2="180" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="798" y1="410" x2="842" y2="360" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="798" y1="580" x2="842" y2="550" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="798" y1="740" x2="842" y2="720" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <!-- MAPPER -> Entity (crea) -->
+    <line x1="1068" y1="180" x2="1112" y2="150" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="1068" y1="360" x2="1112" y2="380" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="1068" y1="550" x2="1112" y2="610" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <line x1="1068" y1="720" x2="1300" y2="500" stroke="#1f3a5f" stroke-width="1.3" stroke-dasharray="5,4" marker-end="url(#flecha)"/>
+    <!-- SocioMapper reutiliza CategoriaMapper; InscripcionMapper reutiliza Socio y Actividad -->
+    <line x1="955" y1="320" x2="955" y2="212" stroke="#555" stroke-width="1.2" marker-end="url(#flecha)"/>
+    <line x1="955" y1="690" x2="955" y2="394" stroke="#555" stroke-width="1.2" marker-end="url(#flecha)"/>
+    <line x1="990" y1="690" x2="990" y2="574" stroke="#555" stroke-width="1.2" marker-end="url(#flecha)"/>
+  </svg>
+
+  <div class="leyenda">Flecha punteada: usa / instancia · ◆ composición: la clave foránea es un objeto, no un int (Socio contiene una Categoria; Inscripcion contiene un Socio y una Actividad) · [TransactionScope] en toda operación que escribe en la base</div>
+</div>
+</body>
+</html>

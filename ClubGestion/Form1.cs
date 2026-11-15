@@ -62,7 +62,6 @@ namespace ClubGestion
             MostrarSocios(socios);
 
             cboSocio.DataSource = socios.Where(s => s.Activo).ToList();
-            cboSocio.DisplayMember = "Apellido";
             cboSocio.ValueMember = "Id";
         }
 

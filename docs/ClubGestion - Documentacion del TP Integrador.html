@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ClubGestion - Documentación del TP Integrador</title>
+<style>
+  @page { size: A4; margin: 20mm 18mm 20mm 18mm; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 11.5pt; line-height: 1.45; color: #222; }
+  h1 { font-size: 20pt; color: #1f3a5f; margin: 0 0 10pt; border-bottom: 2px solid #1f3a5f; padding-bottom: 4pt; }
+  h2 { font-size: 14pt; color: #1f3a5f; margin: 16pt 0 6pt; }
+  h3 { font-size: 12pt; color: #333; margin: 12pt 0 4pt; }
+  p { margin: 0 0 7pt; text-align: justify; }
+  ul, ol { margin: 0 0 8pt 0; padding-left: 20pt; }
+  li { margin-bottom: 2pt; }
+  table { border-collapse: collapse; width: 100%; margin: 6pt 0 10pt; font-size: 10.5pt; }
+  th, td { border: 1px solid #b7c0cc; padding: 4pt 6pt; vertical-align: top; text-align: left; }
+  th { background: #e8eef7; color: #1f3a5f; }
+  .salto { page-break-before: always; }
+  .caratula { height: 240mm; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+  .caratula .uni { font-size: 13pt; color: #1f3a5f; letter-spacing: 1px; }
+  .caratula .tp { font-size: 15pt; margin-top: 30mm; color: #333; }
+  .caratula .nombre { font-size: 34pt; font-weight: 700; color: #1f3a5f; margin: 6mm 0 2mm; }
+  .caratula .sub { font-size: 14pt; color: #444; }
+  .caratula table { width: 80%; margin: 0 auto; font-size: 11pt; }
+  .caratula th { width: 32%; }
+  .caratula .int th, .caratula .int td { text-align: left; }
+  .cita { background: #f3f6fa; border-left: 4px solid #1f3a5f; padding: 6pt 10pt; margin: 6pt 0 10pt; }
+  figure { margin: 8pt 0 12pt; text-align: center; page-break-inside: avoid; }
+  figure img { max-width: 100%; border: 1px solid #ccd3dc; }
+  figcaption { font-size: 10pt; color: #555; margin-top: 3pt; }
+  .pie { font-size: 9.5pt; color: #666; }
+  code { font-family: Consolas, monospace; font-size: 10pt; background: #f3f3f3; padding: 0 3px; }
+  .indice li { margin-bottom: 3pt; }
+  .aviso td:first-child { font-family: Consolas, monospace; font-size: 9.5pt; width: 55%; }
+</style>
+</head>
+<body>
+
+<div class="caratula">
+  <div>
+    <div class="uni">UNIVERSIDAD ABIERTA INTERAMERICANA<br>Facultad de Tecnología Informática</div>
+    <div class="tp">Trabajo Práctico Integrador N° 2</div>
+    <div class="nombre">ClubGestion</div>
+    <div class="sub">Sistema de gestión de socios, actividades e inscripciones de un club de barrio</div>
+  </div>
+  <div>
+    <table>
+      <tr><th>Materia</th><td>Lenguajes de Última Generación (T4-17-14)</td></tr>
+      <tr><th>Profesor</th><td>Gonzalo Arigós</td></tr>
+      <tr><th>Comisión</th><td>2-B · 2° cuatrimestre de 2026</td></tr>
+      <tr><th>Fecha de entrega</th><td>15 de noviembre de 2026</td></tr>
+      <tr><th>Repositorio</th><td>github.com/lucasgaudino16-dotcom/ClubGestion</td></tr>
+    </table>
+    <table class="int">
+      <tr><th>Integrante</th><th>DNI</th><th>Legajo</th></tr>
+      <tr><td>Gaudino, Lucas</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="salto"></div>
+<h1>Contenido</h1>
+<ol class="indice">
+  <li>Descripción del sistema</li>
+  <li>El negocio en cuatro conceptos</li>
+  <li>Las reglas que el sistema hace cumplir</li>
+  <li>Las operaciones que son todo o nada</li>
+  <li>Cómo está construido</li>
+  <li>Diagrama de base de datos</li>
+  <li>Diagrama de clases</li>
+  <li>Manual de usuario</li>
+</ol>
+
+<h1>1. Descripción del sistema</h1>
+<p><strong>ClubGestion</strong> es una aplicación de escritorio para la secretaría de un club de barrio: administra el padrón de socios, las categorías de socio, el catálogo de actividades y las inscripciones de socios a actividades.</p>
+
+<h2>El negocio</h2>
+<p>Un club de barrio tiene socios y ofrece actividades deportivas y recreativas. El socio paga una cuota mensual que depende de su categoría, y además un arancel por cada actividad en la que se anota. Cada actividad tiene un cupo, porque la cancha, el profesor y el horario son limitados.</p>
+<p>Hoy la secretaría lleva todo en papel y en planillas sueltas. De ahí salen los tres problemas que justifican el sistema:</p>
+<ul>
+  <li><strong>No se sabe cuántos lugares quedan.</strong> Hay que contar a mano la lista de anotados de cada actividad, y se anota gente de más.</li>
+  <li><strong>Se pierde el rastro de lo que se cobró.</strong> Si el club aumenta el arancel de natación en marzo, no queda registro de que el socio que se anotó en febrero entró con el precio viejo.</li>
+  <li><strong>El mismo socio aparece dos veces.</strong> Se duplican fichas porque nadie controla el DNI contra lo que ya está anotado.</li>
+</ul>
+
+<h2>Qué hace el sistema</h2>
+<p>Con ClubGestion la secretaría puede:</p>
+<ol>
+  <li>Dar de alta un socio, modificar sus datos, buscarlo por apellido, nombre o DNI, y darlo de baja sin perder su historia.</li>
+  <li>Administrar las categorías de socio (descripción y cuota base mensual).</li>
+  <li>Administrar las actividades del club con su arancel y su cupo.</li>
+  <li>Anotar a un socio en una o varias actividades en una sola operación.</li>
+  <li>Ver en el momento cuántos lugares libres quedan en cada actividad.</li>
+  <li>Consultar quiénes están anotados en una actividad.</li>
+  <li>Dar de baja una inscripción cuando el socio deja la actividad.</li>
+</ol>
+<p>El sistema impide las operaciones que el club no quiere que pasen: anotar a un socio dado de baja, pasarse del cupo, anotar dos veces al mismo socio en la misma actividad, repetir un DNI o borrar datos que tienen historia atrás.</p>
+
+<h2>Quién lo usa</h2>
+<p>Un solo tipo de usuario: el administrativo de la secretaría del club. No es una persona técnica y trabaja con la aplicación abierta todo el día, atendiendo socios en el mostrador. De ahí salen dos decisiones: una sola ventana con pestañas en lugar de muchas ventanas sueltas, y mensajes en castellano del tipo "No quedan cupos en Natación" en lugar de un número de error.</p>
+
+<h2>Qué queda afuera</h2>
+<table>
+  <tr><th>No hace</th><th>Por qué</th></tr>
+  <tr><td>No cobra plata ni se conecta con medios de pago.</td><td>Registra el importe que corresponde; el cobro lo hace la tesorería del club por fuera.</td></tr>
+  <tr><td>No tiene usuarios ni contraseñas.</td><td>Corre en la computadora de la secretaría, con un solo perfil de uso.</td></tr>
+  <tr><td>No manda mails ni avisos.</td><td>Fuera del alcance de la materia.</td></tr>
+  <tr><td>No es multisucursal ni funciona por internet.</td><td>Es una aplicación de escritorio contra una base local.</td></tr>
+  <tr><td>No maneja asistencia ni horarios de clase.</td><td>Administra la inscripción, no el dictado de la actividad.</td></tr>
+</table>
+
+<h1 class="salto">2. El negocio en cuatro conceptos</h1>
+<table>
+  <tr><th>Concepto</th><th>Qué es en el club</th><th>Qué se guarda de él</th></tr>
+  <tr><td><strong>Categoría</strong></td><td>El tipo de socio, que determina cuánto paga de cuota mensual. Hoy son Activo, Cadete y Vitalicio.</td><td>Descripción y cuota base.</td></tr>
+  <tr><td><strong>Socio</strong></td><td>La persona asociada al club.</td><td>Nombre, apellido, DNI, email, teléfono, fecha de alta, si está activo y a qué categoría pertenece.</td></tr>
+  <tr><td><strong>Actividad</strong></td><td>Lo que el club ofrece: Fútbol 5, Natación, Yoga, Tenis, Ajedrez.</td><td>Nombre, arancel y cupo de personas.</td></tr>
+  <tr><td><strong>Inscripción</strong></td><td>El hecho de que un socio se anotó en una actividad.</td><td>Qué socio, qué actividad, en qué fecha y con qué arancel entró.</td></tr>
+</table>
+
+<h2>Cómo se relacionan</h2>
+<p><strong>Una categoría tiene muchos socios y cada socio pertenece a una sola categoría.</strong> Es la relación de uno a muchos. Sirve para que al cambiar la cuota de la categoría Cadete cambie para todos los cadetes de una vez, sin tocar socio por socio.</p>
+<p><strong>Un socio puede estar en muchas actividades y una actividad tiene muchos socios.</strong> Es una relación de muchos a muchos, y no se puede guardar en ninguna de las dos fichas. Por eso la inscripción existe como cosa propia.</p>
+
+<h2>Por qué la inscripción guarda el arancel</h2>
+<p>La inscripción existe por dos motivos, no por uno. Además de unir al socio con la actividad, guarda dos datos que no son ni del socio ni de la actividad, sino del hecho de anotarse: la fecha de inscripción y el arancel aplicado.</p>
+<p>Ese segundo dato es el que resuelve el problema del precio viejo. El arancel de la actividad es la lista de precios de hoy; el arancel aplicado es la foto del precio que pagó ese socio cuando se anotó. Si el club aumenta Natación de 8500 a 10000, los que ya estaban anotados siguen con 8500 y el sistema lo puede demostrar. Si guardáramos solo el precio en la actividad, el aumento reescribiría la historia de todos.</p>
+<p>Esto da las cuatro tablas de la base de datos, con una relación de uno a muchos y una de muchos a muchos con atributos propios, que es lo que pide la consigna.</p>
+
+<h1>3. Las reglas que el sistema hace cumplir</h1>
+<p>Estas reglas son lo que separa al sistema de una planilla. Se verifican en la capa de negocio antes de tocar la base de datos, y cuando una no se cumple el usuario ve un aviso que le dice qué pasó.</p>
+<h3>Socios</h3>
+<ul>
+  <li>El nombre y el apellido tienen al menos dos letras.</li>
+  <li>El DNI tiene 7 u 8 dígitos, sin puntos, y no puede repetirse en dos socios.</li>
+  <li>El email tiene formato de email. El teléfono admite solo dígitos, espacios, guiones y paréntesis, y puede quedar vacío.</li>
+  <li>Todo socio tiene una categoría.</li>
+  <li>Un socio con inscripciones no se elimina: se da de baja. Así el club no pierde el registro de que esa persona participó.</li>
+</ul>
+<h3>Categorías</h3>
+<ul>
+  <li>La descripción tiene entre 3 y 50 caracteres y no puede repetirse.</li>
+  <li>La cuota base no puede ser negativa.</li>
+  <li>Una categoría con socios no se puede eliminar: primero hay que reasignarlos.</li>
+</ul>
+<h3>Actividades</h3>
+<ul>
+  <li>El nombre tiene entre 3 y 80 caracteres y no puede repetirse.</li>
+  <li>El arancel no puede ser negativo y el cupo tiene que ser mayor que cero.</li>
+  <li>El cupo no se puede bajar por debajo de la cantidad de socios ya anotados.</li>
+  <li>Una actividad con inscriptos no se puede eliminar.</li>
+  <li>Cambiar el arancel no modifica lo que se cobró en las inscripciones anteriores.</li>
+</ul>
+<h3>Inscripciones</h3>
+<ul>
+  <li>Hay que elegir un socio y al menos una actividad.</li>
+  <li>Un socio dado de baja no se puede anotar.</li>
+  <li>El mismo socio no se puede anotar dos veces en la misma actividad.</li>
+  <li>No se puede anotar a nadie si no quedan cupos libres.</li>
+  <li>Al anotarse se guarda la fecha del momento y el arancel vigente de la actividad.</li>
+</ul>
+
+<h1 class="salto">4. Las operaciones que son todo o nada</h1>
+<p>La consigna pide manejo de transacciones de negocio, y el club tiene un caso natural: <strong>inscribir a un socio en varias actividades a la vez</strong>.</p>
+<p>El administrativo tilda Fútbol 5, Natación y Yoga y aprieta Inscribir. Son tres inscripciones separadas, pero para el club es un solo trámite. Si al llegar a la tercera resulta que Yoga ya se llenó, el sistema no puede dejar al socio anotado en las dos primeras: el mostrador le dijo "te anoto en las tres" y le cobró por las tres.</p>
+<p>Entonces la operación se deshace completa y el socio queda como estaba, con un aviso que dice en qué actividad falló y que no se registró ninguna inscripción. Las tres inscripciones entran juntas o no entra ninguna. Nunca queda el club con un trámite a medio hacer.</p>
+<div class="cita">
+  <p style="margin:0"><strong>Cómo está implementado.</strong> El método <code>InscripcionBLL.Inscribir(socio, actividades)</code> abre un <code>TransactionScope</code>, recorre las actividades y por cada una verifica el cupo y llama a la capa de datos para insertar la fila. Si una regla falla, se lanza <code>ReglaNegocioException</code>, el <code>using</code> termina sin <code>scope.Complete()</code> y SQL Server revierte todo lo insertado antes. Cada método de la capa de datos abre y cierra su propia conexión; como todas usan la misma cadena, se enlistan en la misma transacción sin necesidad de pasar la conexión por parámetro.</p>
+</div>
+<p>Además, toda operación individual que escribe en la base (alta, modificación y baja de socios, categorías, actividades e inscripciones) también corre dentro de un <code>TransactionScope</code> en la capa de negocio, de modo que un error a mitad de camino nunca deja datos a medias.</p>
+
+<h1>5. Cómo está construido</h1>
+<p>El sistema está separado en cinco capas y cada una tiene un solo trabajo. La forma más fácil de entenderlo es pensar en cómo circula un papel en la secretaría del club.</p>
+<table>
+  <tr><th>Capa</th><th>Su papel en el club</th><th>Qué hace</th></tr>
+  <tr><td><strong>UI</strong> (Windows Forms)</td><td>La ventanilla donde atiende al socio.</td><td>Muestra las pantallas, toma lo que el usuario escribe y es el único lugar donde aparece un cartel. No decide nada.</td></tr>
+  <tr><td><strong>BLL</strong></td><td>El encargado de la secretaría.</td><td>Decide. Acá viven todas las reglas del punto 3 y las transacciones del punto 4. Es la única capa que puede decir "no".</td></tr>
+  <tr><td><strong>DAL</strong></td><td>El archivo donde están las carpetas.</td><td>Habla con la base de datos con ADO.NET: busca, guarda, modifica y borra filas con <code>SqlParameter</code> y bloques <code>using</code>. No opina sobre las reglas.</td></tr>
+  <tr><td><strong>MAPPER</strong></td><td>El que traduce la ficha de cartón a los datos del sistema.</td><td>Convierte una fila de la base (<code>IDataRecord</code>) en un objeto del programa.</td></tr>
+  <tr><td><strong>Entity</strong></td><td>El formato de la ficha en blanco.</td><td>Define qué datos tiene un socio, una categoría, una actividad y una inscripción, y las dos excepciones propias. No hace nada, solo guarda.</td></tr>
+</table>
+<p>Las capas se apoyan siempre hacia abajo y nunca hacia arriba: la ventanilla le pide al encargado y el encargado le pide al archivo. La ventanilla no entra al archivo por su cuenta. Eso es lo que hace que una regla de negocio esté escrita en un solo lugar y valga para toda la aplicación.</p>
+<p>Cuando algo falla, el problema viaja hacia arriba cambiando de idioma en cada capa. La capa de datos atrapa la <code>SqlException</code> y la traduce a una <code>AccesoDatosException</code> con un mensaje como "Error al consultar los socios", guardando el error original adentro. La capa de negocio la deja pasar o la reemplaza por una explicación de negocio (<code>ReglaNegocioException</code>: "No quedan cupos en Yoga"). La pantalla la muestra como un cartel: los avisos de negocio con ícono de advertencia y el resto con ícono de error y el detalle técnico debajo. El usuario nunca ve un error sin explicación, y nunca se pierde el detalle original.</p>
+<p>La base de datos es SQL Server (LocalDB en desarrollo). La cadena de conexión está en <code>App.config</code> y la lee un solo lugar, <code>DAL\Conexion.cs</code>. La clave foránea se modela como objeto, no como número: el socio tiene adentro su categoría y la inscripción tiene adentro el socio y la actividad.</p>
+
+<h1 class="salto">6. Diagrama de base de datos</h1>
+<figure>
+  <img src="img/diagrama-base-de-datos.png" alt="Diagrama de base de datos">
+  <figcaption>Las cuatro tablas con sus campos, tipos, claves primarias y foráneas. INSCRIPCION tiene clave primaria compuesta.</figcaption>
+</figure>
+<table>
+  <tr><th>Tabla</th><th>Clave primaria</th><th>Claves foráneas</th><th>Otras restricciones</th></tr>
+  <tr><td>CATEGORIA</td><td>ID_CATEGORIA (identity)</td><td>—</td><td>DESCRIPCION única; CUOTA_BASE ≥ 0</td></tr>
+  <tr><td>SOCIO</td><td>ID_SOCIO (identity)</td><td>ID_CATEGORIA → CATEGORIA</td><td>DNI único; FECHA_ALTA y ACTIVO con valor por defecto</td></tr>
+  <tr><td>ACTIVIDAD</td><td>ID_ACTIVIDAD (identity)</td><td>—</td><td>NOMBRE único; ARANCEL ≥ 0; CUPO &gt; 0</td></tr>
+  <tr><td>INSCRIPCION</td><td>(ID_SOCIO, ID_ACTIVIDAD)</td><td>ID_SOCIO → SOCIO; ID_ACTIVIDAD → ACTIVIDAD</td><td>FECHA_INSCRIPCION con valor por defecto; ARANCEL_APLICADO obligatorio</td></tr>
+</table>
+<p>El script <code>script_base_de_datos.sql</code> crea la base, las tablas y los datos de ejemplo con <code>IF ... IS NULL</code>, así se puede ejecutar más de una vez sin error.</p>
+
+<h1 class="salto">7. Diagrama de clases</h1>
+<figure>
+  <img src="img/diagrama-de-clases.png" alt="Diagrama de clases">
+  <figcaption>Las clases de cada capa y las dependencias entre ellas. Las flechas van siempre de una capa a la de abajo.</figcaption>
+</figure>
+<p>Lo importante que muestra el diagrama: la clave foránea es un objeto y no un número. <code>Socio</code> tiene adentro una <code>Categoria</code>, e <code>Inscripcion</code> tiene adentro un <code>Socio</code> y una <code>Actividad</code>. Los mappers se reutilizan: <code>SocioMapper</code> llama a <code>CategoriaMapper</code> con las columnas del JOIN, e <code>InscripcionMapper</code> llama a los dos. La grilla de inscriptos recibe un <code>InscripcionDTO</code> plano que arma la capa de negocio, para que la pantalla no tenga que navegar objetos.</p>
+
+<h1 class="salto">8. Manual de usuario</h1>
+<h2>Instalación</h2>
+<ol>
+  <li>Ejecutar <code>script_base_de_datos.sql</code> en SQL Server Management Studio conectado a <code>(localdb)\MSSQLLocalDB</code>. Crea la base <code>ClubGestion</code> con categorías, socios, actividades e inscripciones de ejemplo.</li>
+  <li>Abrir <code>ClubGestion.sln</code> en Visual Studio 2022 y ejecutar el proyecto <code>ClubGestion</code>.</li>
+  <li>Si el servidor no es LocalDB, cambiar <code>Data Source</code> en <code>ClubGestion\App.config</code>. No hace falta recompilar.</li>
+</ol>
+<p>La aplicación es una sola ventana con cuatro pestañas: Socios, Categorías, Actividades e Inscripciones. En las tres primeras la mecánica es la misma: arriba el formulario, abajo la grilla; al hacer clic en una fila de la grilla sus datos se cargan arriba para modificarlos o eliminarlos, y <strong>Limpiar</strong> vuelve al modo de alta.</p>
+
+<h2>Socios</h2>
+<figure><img src="img/01-socios.png" alt="Pestaña Socios"><figcaption>Pestaña Socios: formulario, búsqueda y padrón.</figcaption></figure>
+<ul>
+  <li><strong>Alta:</strong> completar nombre, apellido, DNI (7 u 8 dígitos), email, teléfono (opcional), elegir la categoría y apretar <strong>Agregar</strong>. La fecha de alta la pone el sistema.</li>
+  <li><strong>Modificación:</strong> hacer clic en el socio en la grilla, cambiar lo que haga falta y apretar <strong>Modificar</strong>.</li>
+  <li><strong>Baja:</strong> destildar <strong>Activo</strong> y apretar Modificar. Un socio dado de baja sigue en el padrón pero no se puede inscribir.</li>
+  <li><strong>Eliminar:</strong> borra la ficha definitivamente. Solo se permite si el socio no tiene inscripciones; si las tiene, el sistema avisa y sugiere darlo de baja.</li>
+  <li><strong>Buscar:</strong> escribir parte del apellido, del nombre o del DNI y apretar <strong>Buscar</strong> (o Enter). Con el campo vacío vuelve a mostrar todos.</li>
+</ul>
+<figure><img src="img/05-busqueda.png" alt="Búsqueda de socios"><figcaption>Búsqueda por apellido: la grilla muestra solo las coincidencias.</figcaption></figure>
+
+<h2 class="salto">Categorías</h2>
+<figure><img src="img/02-categorias.png" alt="Pestaña Categorías"><figcaption>Pestaña Categorías: descripción y cuota base mensual.</figcaption></figure>
+<ul>
+  <li><strong>Alta:</strong> escribir la descripción (3 a 50 caracteres, no repetida) y la cuota base, y apretar <strong>Agregar</strong>. La categoría nueva aparece enseguida en el combo de la pestaña Socios.</li>
+  <li><strong>Modificación:</strong> clic en la fila, cambiar y <strong>Modificar</strong>. Cambiar la cuota afecta a todos los socios de esa categoría.</li>
+  <li><strong>Eliminar:</strong> solo si ningún socio la tiene asignada; si no, el sistema avisa cuántos socios hay que reasignar primero.</li>
+</ul>
+
+<h2>Actividades</h2>
+<figure><img src="img/03-actividades.png" alt="Pestaña Actividades"><figcaption>Pestaña Actividades: nombre, arancel y cupo.</figcaption></figure>
+<ul>
+  <li><strong>Alta:</strong> nombre (3 a 80 caracteres, no repetido), arancel (no negativo) y cupo (mayor que cero), y <strong>Agregar</strong>.</li>
+  <li><strong>Modificación:</strong> clic en la fila, cambiar y <strong>Modificar</strong>. El cupo no puede quedar por debajo de los inscriptos actuales. Cambiar el arancel no modifica lo cobrado en inscripciones anteriores.</li>
+  <li><strong>Eliminar:</strong> solo si la actividad no tiene inscriptos.</li>
+</ul>
+
+<h2 class="salto">Inscripciones</h2>
+<figure><img src="img/04-inscripciones.png" alt="Pestaña Inscripciones"><figcaption>Pestaña Inscripciones: a la izquierda se anota, a la derecha se consulta y se da de baja.</figcaption></figure>
+<ul>
+  <li><strong>Inscribir:</strong> elegir el socio en la lista (solo aparecen los activos), tildar una o varias actividades y apretar <strong>Inscribir</strong>. Todas las actividades tildadas se registran juntas: si una falla (sin cupo o ya inscripto), no se registra ninguna y el aviso dice cuál fue el problema.</li>
+  <li><strong>Consultar inscriptos:</strong> elegir la actividad en el combo de la derecha. La grilla muestra quiénes están anotados, con qué arancel y en qué fecha, y arriba se ven los cupos libres.</li>
+  <li><strong>Dar de baja una inscripción:</strong> seleccionar la fila en la grilla de inscriptos y apretar <strong>Dar de baja la inscripción</strong>. El sistema pide confirmación.</li>
+</ul>
+
+<h2>Qué significa cada aviso</h2>
+<p>Los avisos con ícono amarillo son reglas de negocio: el sistema no hizo nada y explica qué corregir. Los avisos con ícono rojo son errores técnicos (por ejemplo, la base de datos no responde) e incluyen el detalle debajo del mensaje.</p>
+<table class="aviso">
+  <tr><th>Aviso</th><th>Qué pasó y qué hacer</th></tr>
+  <tr><td>El DNI debe tener 7 u 8 dígitos, sin puntos.</td><td>Escribir el DNI solo con números.</td></tr>
+  <tr><td>Ya existe un socio con el DNI 40111222.</td><td>El socio ya está cargado: buscarlo y modificarlo en lugar de darlo de alta de nuevo.</td></tr>
+  <tr><td>El socio tiene inscripciones. Dalo de baja en lugar de eliminarlo.</td><td>Destildar Activo y Modificar.</td></tr>
+  <tr><td>No se puede eliminar Activo porque tiene 3 socio(s).</td><td>Reasignar esos socios a otra categoría y volver a intentar.</td></tr>
+  <tr><td>La actividad ya tiene 2 inscriptos: el cupo no puede ser menor.</td><td>Elegir un cupo mayor o igual a los inscriptos.</td></tr>
+  <tr><td>No quedan cupos en Ajedrez. No se registró ninguna inscripción.</td><td>La operación completa se revirtió. Destildar esa actividad y volver a inscribir.</td></tr>
+  <tr><td>Gaudino, Lucas ya está inscripto en Yoga.</td><td>No hace falta hacer nada: ya estaba anotado.</td></tr>
+  <tr><td>El socio está dado de baja.</td><td>Reactivarlo desde la pestaña Socios antes de inscribirlo.</td></tr>
+  <tr><td>Error al consultar los socios. Detalle: Cannot open database...</td><td>La base no está disponible: revisar que LocalDB esté corriendo y que el script se haya ejecutado.</td></tr>
+</table>
+<p class="pie">Documento generado el 15/11/2026 a partir del repositorio del grupo. El código fuente, el script de la base y este documento están en github.com/lucasgaudino16-dotcom/ClubGestion.</p>
+
+</body>
+</html>

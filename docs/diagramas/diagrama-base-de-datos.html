@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Diagrama de base de datos - ClubGestion</title>
+<style>
+  body { margin: 0; background: #fff; font-family: "Segoe UI", Arial, sans-serif; }
+  .lienzo { position: relative; width: 1300px; height: 760px; }
+  .tabla { position: absolute; width: 300px; border: 2px solid #1f3a5f; border-radius: 6px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.12); font-size: 13px; }
+  .tabla h3 { margin: 0; padding: 8px 12px; background: #1f3a5f; color: #fff; font-size: 15px; letter-spacing: .5px; border-radius: 4px 4px 0 0; }
+  .tabla table { width: 100%; border-collapse: collapse; }
+  .tabla td { padding: 4px 10px; border-top: 1px solid #e3e8ef; white-space: nowrap; }
+  .tabla td.k { width: 26px; font-weight: 700; color: #b8860b; text-align: center; }
+  .tabla td.k.fk { color: #2e7d32; }
+  .tabla td.t { color: #555; text-align: right; font-family: Consolas, monospace; font-size: 12px; }
+  .tabla td.c { color: #666; font-size: 11px; text-align: right; white-space: normal; }
+  .tabla tr.pk td { background: #fff8e1; }
+  svg { position: absolute; left: 0; top: 0; pointer-events: none; }
+  .rel { font-size: 12px; fill: #333; font-style: italic; }
+  .card { font-size: 13px; font-weight: 700; fill: #1f3a5f; }
+  .titulo { position: absolute; left: 20px; top: 14px; font-size: 18px; font-weight: 600; color: #1f3a5f; }
+  .leyenda { position: absolute; left: 20px; bottom: 14px; font-size: 12px; color: #555; }
+  .leyenda b { color: #b8860b; } .leyenda i { color: #2e7d32; font-style: normal; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="lienzo">
+  <div class="titulo">ClubGestion · Modelo de base de datos (SQL Server)</div>
+
+  <div class="tabla" style="left:40px; top:130px;">
+    <h3>CATEGORIA</h3>
+    <table>
+      <tr class="pk"><td class="k">PK</td><td>ID_CATEGORIA</td><td class="t">INT IDENTITY</td></tr>
+      <tr><td class="k"></td><td>DESCRIPCION</td><td class="t">NVARCHAR(50)</td></tr>
+      <tr><td class="k"></td><td>CUOTA_BASE</td><td class="t">DECIMAL(10,2)</td></tr>
+      <tr><td colspan="3" class="c">UNIQUE (DESCRIPCION) · CHECK (CUOTA_BASE &gt;= 0)</td></tr>
+    </table>
+  </div>
+
+  <div class="tabla" style="left:450px; top:60px; width:340px;">
+    <h3>SOCIO</h3>
+    <table>
+      <tr class="pk"><td class="k">PK</td><td>ID_SOCIO</td><td class="t">INT IDENTITY</td></tr>
+      <tr><td class="k"></td><td>NOMBRE</td><td class="t">NVARCHAR(50)</td></tr>
+      <tr><td class="k"></td><td>APELLIDO</td><td class="t">NVARCHAR(50)</td></tr>
+      <tr><td class="k"></td><td>DNI</td><td class="t">NVARCHAR(8)</td></tr>
+      <tr><td class="k"></td><td>EMAIL</td><td class="t">NVARCHAR(100)</td></tr>
+      <tr><td class="k"></td><td>TELEFONO</td><td class="t">NVARCHAR(20) NULL</td></tr>
+      <tr><td class="k"></td><td>FECHA_ALTA</td><td class="t">DATETIME</td></tr>
+      <tr><td class="k"></td><td>ACTIVO</td><td class="t">BIT</td></tr>
+      <tr><td class="k fk">FK</td><td>ID_CATEGORIA</td><td class="t">INT</td></tr>
+      <tr><td colspan="3" class="c">UNIQUE (DNI) · DEFAULT FECHA_ALTA = GETDATE(), ACTIVO = 1</td></tr>
+    </table>
+  </div>
+
+  <div class="tabla" style="left:450px; top:470px; width:340px;">
+    <h3>ACTIVIDAD</h3>
+    <table>
+      <tr class="pk"><td class="k">PK</td><td>ID_ACTIVIDAD</td><td class="t">INT IDENTITY</td></tr>
+      <tr><td class="k"></td><td>NOMBRE</td><td class="t">NVARCHAR(80)</td></tr>
+      <tr><td class="k"></td><td>ARANCEL</td><td class="t">DECIMAL(10,2)</td></tr>
+      <tr><td class="k"></td><td>CUPO</td><td class="t">INT</td></tr>
+      <tr><td colspan="3" class="c">UNIQUE (NOMBRE) · CHECK (ARANCEL &gt;= 0) · CHECK (CUPO &gt; 0)</td></tr>
+    </table>
+  </div>
+
+  <div class="tabla" style="left:900px; top:290px; width:360px;">
+    <h3>INSCRIPCION</h3>
+    <table>
+      <tr class="pk"><td class="k">PK<br>FK</td><td>ID_SOCIO</td><td class="t">INT</td></tr>
+      <tr class="pk"><td class="k">PK<br>FK</td><td>ID_ACTIVIDAD</td><td class="t">INT</td></tr>
+      <tr><td class="k"></td><td>FECHA_INSCRIPCION</td><td class="t">DATETIME</td></tr>
+      <tr><td class="k"></td><td>ARANCEL_APLICADO</td><td class="t">DECIMAL(10,2)</td></tr>
+      <tr><td colspan="3" class="c">PK compuesta (ID_SOCIO, ID_ACTIVIDAD) · DEFAULT FECHA = GETDATE()</td></tr>
+    </table>
+  </div>
+
+  <svg width="1300" height="760">
+    <defs>
+      <marker id="pata" markerWidth="14" markerHeight="14" refX="13" refY="7" orient="auto">
+        <path d="M1,1 L13,7 L1,13" fill="none" stroke="#1f3a5f" stroke-width="1.6"/>
+        <line x1="1" y1="1" x2="1" y2="13" stroke="#1f3a5f" stroke-width="1.6"/>
+      </marker>
+    </defs>
+    <!-- CATEGORIA 1 — N SOCIO -->
+    <line x1="340" y1="230" x2="450" y2="230" stroke="#1f3a5f" stroke-width="2" marker-end="url(#pata)"/>
+    <text x="348" y="222" class="card">1</text>
+    <text x="428" y="222" class="card">N</text>
+    <text x="352" y="250" class="rel">pertenece a</text>
+    <!-- SOCIO 1 — N INSCRIPCION -->
+    <line x1="790" y1="200" x2="900" y2="340" stroke="#1f3a5f" stroke-width="2" marker-end="url(#pata)"/>
+    <text x="798" y="192" class="card">1</text>
+    <text x="862" y="322" class="card">N</text>
+    <text x="800" y="262" class="rel">se anota en</text>
+    <!-- ACTIVIDAD 1 — N INSCRIPCION -->
+    <line x1="790" y1="560" x2="900" y2="430" stroke="#1f3a5f" stroke-width="2" marker-end="url(#pata)"/>
+    <text x="798" y="580" class="card">1</text>
+    <text x="862" y="462" class="card">N</text>
+    <text x="800" y="520" class="rel">recibe</text>
+  </svg>
+
+  <div class="leyenda"><b>PK</b> clave primaria · <i>FK</i> clave foránea · CATEGORIA→SOCIO es 1:N · SOCIO↔ACTIVIDAD es N:M resuelta por INSCRIPCION, que además guarda fecha y arancel aplicado (atributos propios de la relación)</div>
+</div>
+</body>
+</html>
