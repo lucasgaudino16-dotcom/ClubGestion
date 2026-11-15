@@ -38,6 +38,19 @@
             btnModificar = new Button();
             btnEliminar = new Button();
             btnLimpiar = new Button();
+            tabActividades = new TabPage();
+            dgvActividades = new DataGridView();
+            grpActividad = new GroupBox();
+            lblNombreAct = new Label();
+            txtNombreAct = new TextBox();
+            lblArancel = new Label();
+            nudArancel = new NumericUpDown();
+            lblCupo = new Label();
+            nudCupo = new NumericUpDown();
+            btnActAgregar = new Button();
+            btnActModificar = new Button();
+            btnActEliminar = new Button();
+            btnActLimpiar = new Button();
             tabInscripciones = new TabPage();
             grpInscribir = new GroupBox();
             lblSocio = new Label();
@@ -54,6 +67,11 @@
             tabSocios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSocios).BeginInit();
             grpSocio.SuspendLayout();
+            tabActividades.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvActividades).BeginInit();
+            grpActividad.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudArancel).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudCupo).BeginInit();
             tabInscripciones.SuspendLayout();
             grpInscribir.SuspendLayout();
             grpInscriptos.SuspendLayout();
@@ -63,6 +81,7 @@
             // tabControl
             //
             tabControl.Controls.Add(tabSocios);
+            tabControl.Controls.Add(tabActividades);
             tabControl.Controls.Add(tabInscripciones);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point(0, 0);
@@ -138,6 +157,7 @@
             // txtNombre
             //
             txtNombre.Location = new Point(16, 46);
+            txtNombre.MaxLength = 50;
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(200, 23);
             txtNombre.TabIndex = 1;
@@ -154,6 +174,7 @@
             // txtApellido
             //
             txtApellido.Location = new Point(232, 46);
+            txtApellido.MaxLength = 50;
             txtApellido.Name = "txtApellido";
             txtApellido.Size = new Size(200, 23);
             txtApellido.TabIndex = 3;
@@ -187,6 +208,7 @@
             // txtEmail
             //
             txtEmail.Location = new Point(16, 98);
+            txtEmail.MaxLength = 100;
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(260, 23);
             txtEmail.TabIndex = 7;
@@ -203,6 +225,7 @@
             // txtTelefono
             //
             txtTelefono.Location = new Point(292, 98);
+            txtTelefono.MaxLength = 20;
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size(140, 23);
             txtTelefono.TabIndex = 9;
@@ -277,6 +300,152 @@
             btnLimpiar.UseVisualStyleBackColor = true;
             btnLimpiar.Click += btnLimpiar_Click;
             //
+            // tabActividades
+            //
+            tabActividades.Controls.Add(dgvActividades);
+            tabActividades.Controls.Add(grpActividad);
+            tabActividades.Location = new Point(4, 24);
+            tabActividades.Name = "tabActividades";
+            tabActividades.Padding = new Padding(3);
+            tabActividades.Size = new Size(976, 583);
+            tabActividades.TabIndex = 1;
+            tabActividades.Text = "Actividades";
+            tabActividades.UseVisualStyleBackColor = true;
+            //
+            // dgvActividades
+            //
+            dgvActividades.AllowUserToAddRows = false;
+            dgvActividades.AllowUserToDeleteRows = false;
+            dgvActividades.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvActividades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvActividades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvActividades.Location = new Point(6, 130);
+            dgvActividades.MultiSelect = false;
+            dgvActividades.Name = "dgvActividades";
+            dgvActividades.ReadOnly = true;
+            dgvActividades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvActividades.Size = new Size(964, 447);
+            dgvActividades.TabIndex = 1;
+            dgvActividades.CellClick += dgvActividades_CellClick;
+            //
+            // grpActividad
+            //
+            grpActividad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            grpActividad.Controls.Add(lblNombreAct);
+            grpActividad.Controls.Add(txtNombreAct);
+            grpActividad.Controls.Add(lblArancel);
+            grpActividad.Controls.Add(nudArancel);
+            grpActividad.Controls.Add(lblCupo);
+            grpActividad.Controls.Add(nudCupo);
+            grpActividad.Controls.Add(btnActAgregar);
+            grpActividad.Controls.Add(btnActModificar);
+            grpActividad.Controls.Add(btnActEliminar);
+            grpActividad.Controls.Add(btnActLimpiar);
+            grpActividad.Location = new Point(6, 6);
+            grpActividad.Name = "grpActividad";
+            grpActividad.Size = new Size(964, 118);
+            grpActividad.TabIndex = 0;
+            grpActividad.TabStop = false;
+            grpActividad.Text = "Datos de la actividad";
+            //
+            // lblNombreAct
+            //
+            lblNombreAct.AutoSize = true;
+            lblNombreAct.Location = new Point(16, 28);
+            lblNombreAct.Name = "lblNombreAct";
+            lblNombreAct.Size = new Size(51, 15);
+            lblNombreAct.TabIndex = 0;
+            lblNombreAct.Text = "Nombre";
+            //
+            // txtNombreAct
+            //
+            txtNombreAct.Location = new Point(16, 46);
+            txtNombreAct.MaxLength = 80;
+            txtNombreAct.Name = "txtNombreAct";
+            txtNombreAct.Size = new Size(300, 23);
+            txtNombreAct.TabIndex = 1;
+            //
+            // lblArancel
+            //
+            lblArancel.AutoSize = true;
+            lblArancel.Location = new Point(332, 28);
+            lblArancel.Name = "lblArancel";
+            lblArancel.Size = new Size(48, 15);
+            lblArancel.TabIndex = 2;
+            lblArancel.Text = "Arancel";
+            //
+            // nudArancel
+            //
+            nudArancel.DecimalPlaces = 2;
+            nudArancel.Increment = new decimal(new int[] { 500, 0, 0, 0 });
+            nudArancel.Location = new Point(332, 46);
+            nudArancel.Maximum = new decimal(new int[] { 99999999, 0, 0, 0 });
+            nudArancel.Name = "nudArancel";
+            nudArancel.Size = new Size(140, 23);
+            nudArancel.TabIndex = 3;
+            nudArancel.ThousandsSeparator = true;
+            nudArancel.TextAlign = HorizontalAlignment.Right;
+            //
+            // lblCupo
+            //
+            lblCupo.AutoSize = true;
+            lblCupo.Location = new Point(488, 28);
+            lblCupo.Name = "lblCupo";
+            lblCupo.Size = new Size(35, 15);
+            lblCupo.TabIndex = 4;
+            lblCupo.Text = "Cupo";
+            //
+            // nudCupo
+            //
+            nudCupo.Location = new Point(488, 46);
+            nudCupo.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
+            nudCupo.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            nudCupo.Name = "nudCupo";
+            nudCupo.Size = new Size(90, 23);
+            nudCupo.TabIndex = 5;
+            nudCupo.TextAlign = HorizontalAlignment.Right;
+            nudCupo.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            //
+            // btnActAgregar
+            //
+            btnActAgregar.Location = new Point(16, 82);
+            btnActAgregar.Name = "btnActAgregar";
+            btnActAgregar.Size = new Size(100, 27);
+            btnActAgregar.TabIndex = 6;
+            btnActAgregar.Text = "Agregar";
+            btnActAgregar.UseVisualStyleBackColor = true;
+            btnActAgregar.Click += btnActAgregar_Click;
+            //
+            // btnActModificar
+            //
+            btnActModificar.Location = new Point(122, 82);
+            btnActModificar.Name = "btnActModificar";
+            btnActModificar.Size = new Size(100, 27);
+            btnActModificar.TabIndex = 7;
+            btnActModificar.Text = "Modificar";
+            btnActModificar.UseVisualStyleBackColor = true;
+            btnActModificar.Click += btnActModificar_Click;
+            //
+            // btnActEliminar
+            //
+            btnActEliminar.Location = new Point(228, 82);
+            btnActEliminar.Name = "btnActEliminar";
+            btnActEliminar.Size = new Size(100, 27);
+            btnActEliminar.TabIndex = 8;
+            btnActEliminar.Text = "Eliminar";
+            btnActEliminar.UseVisualStyleBackColor = true;
+            btnActEliminar.Click += btnActEliminar_Click;
+            //
+            // btnActLimpiar
+            //
+            btnActLimpiar.Location = new Point(334, 82);
+            btnActLimpiar.Name = "btnActLimpiar";
+            btnActLimpiar.Size = new Size(100, 27);
+            btnActLimpiar.TabIndex = 9;
+            btnActLimpiar.Text = "Limpiar";
+            btnActLimpiar.UseVisualStyleBackColor = true;
+            btnActLimpiar.Click += btnActLimpiar_Click;
+            //
             // tabInscripciones
             //
             tabInscripciones.Controls.Add(grpInscriptos);
@@ -285,7 +454,7 @@
             tabInscripciones.Name = "tabInscripciones";
             tabInscripciones.Padding = new Padding(3);
             tabInscripciones.Size = new Size(976, 583);
-            tabInscripciones.TabIndex = 1;
+            tabInscripciones.TabIndex = 2;
             tabInscripciones.Text = "Inscripciones";
             tabInscripciones.UseVisualStyleBackColor = true;
             //
@@ -425,6 +594,12 @@
             ((System.ComponentModel.ISupportInitialize)dgvSocios).EndInit();
             grpSocio.ResumeLayout(false);
             grpSocio.PerformLayout();
+            tabActividades.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvActividades).EndInit();
+            grpActividad.ResumeLayout(false);
+            grpActividad.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudArancel).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudCupo).EndInit();
             tabInscripciones.ResumeLayout(false);
             grpInscribir.ResumeLayout(false);
             grpInscribir.PerformLayout();
@@ -457,6 +632,19 @@
         private Button btnModificar;
         private Button btnEliminar;
         private Button btnLimpiar;
+        private TabPage tabActividades;
+        private DataGridView dgvActividades;
+        private GroupBox grpActividad;
+        private Label lblNombreAct;
+        private TextBox txtNombreAct;
+        private Label lblArancel;
+        private NumericUpDown nudArancel;
+        private Label lblCupo;
+        private NumericUpDown nudCupo;
+        private Button btnActAgregar;
+        private Button btnActModificar;
+        private Button btnActEliminar;
+        private Button btnActLimpiar;
         private TabPage tabInscripciones;
         private GroupBox grpInscribir;
         private Label lblSocio;

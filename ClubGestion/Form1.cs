@@ -10,6 +10,7 @@ namespace ClubGestion
         private readonly ActividadBLL _actividadBll = new ActividadBLL();
         private readonly InscripcionBLL _inscripcionBll = new InscripcionBLL();
         private int _idSeleccionado;
+        private int _idActividadSeleccionada;
 
         public Form1()
         {
@@ -24,13 +25,7 @@ namespace ClubGestion
                 cboCategoria.DisplayMember = "Descripcion";
                 cboCategoria.ValueMember = "Id";
 
-                clbActividades.DataSource = _actividadBll.ObtenerTodas();
-                clbActividades.DisplayMember = "Nombre";
-
-                cboActividadVer.DataSource = _actividadBll.ObtenerTodas();
-                cboActividadVer.DisplayMember = "Nombre";
-                cboActividadVer.ValueMember = "Id";
-
+                CargarActividades();
                 CargarSocios();
                 CargarInscriptos();
             }
@@ -52,9 +47,36 @@ namespace ClubGestion
             cboSocio.ValueMember = "Id";
         }
 
+        private void CargarActividades()
+        {
+            var actividades = _actividadBll.ObtenerTodas();
+            var elegida = cboActividadVer.SelectedItem is Actividad a ? a.Id : 0;
+
+            dgvActividades.DataSource = null;
+            dgvActividades.DataSource = actividades;
+            if (dgvActividades.Columns["Id"] != null) dgvActividades.Columns["Id"].Visible = false;
+
+            clbActividades.DataSource = null;
+            clbActividades.DataSource = actividades;
+            clbActividades.DisplayMember = "Nombre";
+
+            cboActividadVer.DataSource = null;
+            cboActividadVer.DataSource = actividades.ToList();
+            cboActividadVer.DisplayMember = "Nombre";
+            cboActividadVer.ValueMember = "Id";
+
+            if (elegida > 0 && actividades.Any(x => x.Id == elegida))
+                cboActividadVer.SelectedValue = elegida;
+        }
+
         private void CargarInscriptos()
         {
-            if (cboActividadVer.SelectedItem is not Actividad actividad) return;
+            if (cboActividadVer.SelectedItem is not Actividad actividad)
+            {
+                dgvInscriptos.DataSource = null;
+                lblCupos.Text = "Cupos libres:";
+                return;
+            }
             dgvInscriptos.DataSource = null;
             dgvInscriptos.DataSource = _inscripcionBll.ObtenerPorActividad(actividad.Id);
             lblCupos.Text = "Cupos libres: " + _actividadBll.CuposLibres(actividad) + " de " + actividad.Cupo;
@@ -173,6 +195,117 @@ namespace ClubGestion
                 txtTelefono.Text = socio.Telefono ?? string.Empty;
                 chkActivo.Checked = socio.Activo;
                 cboCategoria.SelectedValue = socio.Categoria.Id;
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private Actividad LeerActividad()
+        {
+            return new Actividad
+            {
+                Id = _idActividadSeleccionada,
+                Nombre = txtNombreAct.Text,
+                Arancel = nudArancel.Value,
+                Cupo = (int)nudCupo.Value
+            };
+        }
+
+        private void LimpiarActividad()
+        {
+            _idActividadSeleccionada = 0;
+            txtNombreAct.Clear();
+            nudArancel.Value = 0;
+            nudCupo.Value = 10;
+            dgvActividades.ClearSelection();
+            txtNombreAct.Focus();
+        }
+
+        private void btnActAgregar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var actividad = LeerActividad();
+                actividad.Id = 0;
+                _actividadBll.Insertar(actividad);
+                MessageBox.Show("Actividad registrada.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarActividades();
+                CargarInscriptos();
+                LimpiarActividad();
+            }
+            catch (ReglaNegocioException ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnActModificar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_idActividadSeleccionada == 0)
+                    throw new ReglaNegocioException("Elegí una actividad de la grilla.");
+                _actividadBll.Modificar(LeerActividad());
+                MessageBox.Show("Actividad modificada.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarActividades();
+                CargarInscriptos();
+                LimpiarActividad();
+            }
+            catch (ReglaNegocioException ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnActEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_idActividadSeleccionada == 0)
+                    throw new ReglaNegocioException("Elegí una actividad de la grilla.");
+                if (MessageBox.Show("¿Eliminar la actividad seleccionada?", "Club", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+                _actividadBll.Eliminar(_idActividadSeleccionada);
+                MessageBox.Show("Actividad eliminada.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarActividades();
+                CargarInscriptos();
+                LimpiarActividad();
+            }
+            catch (ReglaNegocioException ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void btnActLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarActividad();
+        }
+
+        private void dgvActividades_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex < 0) return;
+                if (dgvActividades.Rows[e.RowIndex].DataBoundItem is not Actividad actividad) return;
+                _idActividadSeleccionada = actividad.Id;
+                txtNombreAct.Text = actividad.Nombre;
+                nudArancel.Value = Math.Min(actividad.Arancel, nudArancel.Maximum);
+                nudCupo.Value = Math.Min(actividad.Cupo, nudCupo.Maximum);
             }
             catch (Exception ex)
             {
