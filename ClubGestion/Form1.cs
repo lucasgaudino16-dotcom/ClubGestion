@@ -33,28 +33,26 @@ namespace ClubGestion
             }
         }
 
+
         private void CargarCategorias()
         {
             var categorias = _categoriaBll.ObtenerTodas();
-            var elegida = cboCategoria.SelectedItem is Categoria c ? c.Id : 0;
 
             dgvCategorias.DataSource = null;
             dgvCategorias.DataSource = categorias;
-            if (dgvCategorias.Columns["Id"] != null) dgvCategorias.Columns["Id"].Visible = false;
+
+            if (dgvCategorias.Columns["Id"] != null)
+                dgvCategorias.Columns["Id"].Visible = false;
+
             if (dgvCategorias.Columns["CuotaBase"] != null)
             {
                 dgvCategorias.Columns["CuotaBase"].HeaderText = "Cuota base";
                 dgvCategorias.Columns["CuotaBase"].DefaultCellStyle.Format = "N2";
             }
 
-            cboCategoria.DataSource = null;
-            cboCategoria.DataSource = categorias.ToList();
-            cboCategoria.DisplayMember = "Descripcion";
-            cboCategoria.ValueMember = "Id";
-
-            if (elegida > 0 && categorias.Any(x => x.Id == elegida))
-                cboCategoria.SelectedValue = elegida;
+            datosSocioControl1.CargarCategorias(categorias);
         }
+
 
         private void CargarSocios()
         {
@@ -111,31 +109,17 @@ namespace ClubGestion
 
         private Socio LeerSocio()
         {
-            return new Socio
-            {
-                Id = _idSeleccionado,
-                Nombre = txtNombre.Text,
-                Apellido = txtApellido.Text,
-                Dni = txtDni.Text,
-                Email = txtEmail.Text,
-                Telefono = txtTelefono.Text,
-                Activo = chkActivo.Checked,
-                Categoria = cboCategoria.SelectedItem as Categoria ?? new Categoria()
-            };
+            Socio socio = datosSocioControl1.ObtenerDatos();
+            socio.Id = _idSeleccionado;
+
+            return socio;
         }
 
         private void Limpiar()
         {
             _idSeleccionado = 0;
-            txtNombre.Clear();
-            txtApellido.Clear();
-            txtDni.Clear();
-            txtEmail.Clear();
-            txtTelefono.Clear();
-            chkActivo.Checked = true;
-            if (cboCategoria.Items.Count > 0) cboCategoria.SelectedIndex = 0;
+            datosSocioControl1.Limpiar();
             dgvSocios.ClearSelection();
-            txtNombre.Focus();
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -230,26 +214,23 @@ namespace ClubGestion
             btnBuscar_Click(sender, e);
         }
 
+
         private void dgvSocios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
                 if (e.RowIndex < 0) return;
                 if (dgvSocios.Rows[e.RowIndex].DataBoundItem is not Socio socio) return;
+
                 _idSeleccionado = socio.Id;
-                txtNombre.Text = socio.Nombre;
-                txtApellido.Text = socio.Apellido;
-                txtDni.Text = socio.Dni;
-                txtEmail.Text = socio.Email;
-                txtTelefono.Text = socio.Telefono ?? string.Empty;
-                chkActivo.Checked = socio.Activo;
-                cboCategoria.SelectedValue = socio.Categoria.Id;
+                datosSocioControl1.CargarDatos(socio);
             }
             catch (Exception ex)
             {
                 MostrarError(ex);
             }
         }
+
 
         private Categoria LeerCategoria()
         {
