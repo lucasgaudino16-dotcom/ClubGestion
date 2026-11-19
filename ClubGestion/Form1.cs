@@ -26,6 +26,8 @@ namespace ClubGestion
                 CargarActividades();
                 CargarSocios();
                 CargarInscriptos();
+                CargarComboFiltroReporte();
+                CargarReporte();
             }
             catch (Exception ex)
             {
@@ -107,6 +109,54 @@ namespace ClubGestion
             if (dgvInscriptos.Columns["IdSocio"] != null) dgvInscriptos.Columns["IdSocio"].Visible = false;
             if (dgvInscriptos.Columns["IdActividad"] != null) dgvInscriptos.Columns["IdActividad"].Visible = false;
             lblCupos.Text = "Cupos libres: " + _actividadBll.CuposLibres(actividad) + " de " + actividad.Cupo;
+        }
+
+        private void CargarComboFiltroReporte()
+        {
+            try
+            {
+                var actividades = _actividadBll.ObtenerTodas();
+                var elegida = cbFiltroActividad.SelectedItem is Actividad a ? a.Id : 0;
+
+                var opciones = new List<Actividad>
+                {
+                    new Actividad { Id = 0, Nombre = "Todas las actividades" }
+                };
+                opciones.AddRange(actividades);
+
+                cbFiltroActividad.DataSource = null;
+                cbFiltroActividad.DataSource = opciones;
+                cbFiltroActividad.DisplayMember = "Nombre";
+                cbFiltroActividad.ValueMember = "Id";
+
+                cbFiltroActividad.SelectedValue = opciones.Any(x => x.Id == elegida) ? elegida : 0;
+
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
+        }
+
+        private void CargarReporte()
+        {
+            try
+            {
+                int? idActividad = cbFiltroActividad.SelectedItem is Actividad a && a.Id > 0 ? a.Id : null;
+                var reporte = _actividadBll.ObtenerReporte(idActividad);
+
+                dgvReporteActividades.DataSource = null;
+                dgvReporteActividades.DataSource = reporte;
+                dgvReporteActividades.Columns["ValorCuota"]!.DefaultCellStyle.Format = "N2";
+                dgvReporteActividades.Columns["RecaudacionTotal"]!.DefaultCellStyle.Format = "N2";
+
+                lblTotalInscriptos.Text = $"Total inscriptos: {reporte.Sum(x => x.CantidadInscriptos)}";
+                lblRecaudacionTotal.Text = $"Recaudación total: $ {reporte.Sum(x => x.RecaudacionTotal):N2}";
+            }
+            catch (Exception ex)
+            {
+                MostrarError(ex);
+            }
         }
 
         private Socio LeerSocio()
@@ -471,7 +521,7 @@ namespace ClubGestion
         private void btnInscribir_Click(object sender, EventArgs e)
         {
             try
-            { 
+            {
                 if (cboSocio.SelectedItem is not Socio socio) throw new ReglaNegocioException("Elegí un socio.");
 
                 var actividades = clbActividades.CheckedItems.Cast<Actividad>().ToList();
@@ -542,6 +592,18 @@ namespace ClubGestion
         {
             var detalle = ex.InnerException != null ? Environment.NewLine + Environment.NewLine + "Detalle: " + ex.InnerException.Message : string.Empty;
             MessageBox.Show(ex.Message + detalle, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void btnConsultarReporte_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarReporte();
+            }
+            catch(Exception ex)
+            {
+                MostrarError(ex);
+            }
         }
     }
 }

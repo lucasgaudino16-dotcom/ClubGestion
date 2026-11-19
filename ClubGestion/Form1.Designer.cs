@@ -66,18 +66,27 @@
             btnActEliminar = new Button();
             btnActLimpiar = new Button();
             tabInscripciones = new TabPage();
-            grpInscribir = new GroupBox();
-            lblSocio = new Label();
-            cboSocio = new ComboBox();
-            lblActividades = new Label();
-            clbActividades = new CheckedListBox();
-            btnInscribir = new Button();
             grpInscriptos = new GroupBox();
             lblActividadVer = new Label();
             cboActividadVer = new ComboBox();
             lblCupos = new Label();
             dgvInscriptos = new DataGridView();
             btnDesinscribir = new Button();
+            grpInscribir = new GroupBox();
+            lblSocio = new Label();
+            cboSocio = new ComboBox();
+            lblActividades = new Label();
+            clbActividades = new CheckedListBox();
+            btnInscribir = new Button();
+            tabReportes = new TabPage();
+            groupBox2 = new GroupBox();
+            dgvReporteActividades = new DataGridView();
+            groupBox1 = new GroupBox();
+            lblRecaudacionTotal = new Label();
+            lblTotalInscriptos = new Label();
+            btnConsultarReporte = new Button();
+            label1 = new Label();
+            cbFiltroActividad = new ComboBox();
             tabControl.SuspendLayout();
             tabSocios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSocios).BeginInit();
@@ -92,26 +101,31 @@
             ((System.ComponentModel.ISupportInitialize)nudArancel).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudCupo).BeginInit();
             tabInscripciones.SuspendLayout();
-            grpInscribir.SuspendLayout();
             grpInscriptos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInscriptos).BeginInit();
+            grpInscribir.SuspendLayout();
+            tabReportes.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvReporteActividades).BeginInit();
+            groupBox1.SuspendLayout();
             SuspendLayout();
-            //
+            // 
             // tabControl
-            //
+            // 
             tabControl.Controls.Add(tabSocios);
             tabControl.Controls.Add(tabCategorias);
             tabControl.Controls.Add(tabActividades);
             tabControl.Controls.Add(tabInscripciones);
+            tabControl.Controls.Add(tabReportes);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point(0, 0);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(984, 611);
             tabControl.TabIndex = 0;
-            //
+            // 
             // tabSocios
-            //
+            // 
             tabSocios.Controls.Add(lblBuscar);
             tabSocios.Controls.Add(txtBuscar);
             tabSocios.Controls.Add(btnBuscar);
@@ -124,27 +138,27 @@
             tabSocios.TabIndex = 0;
             tabSocios.Text = "Socios";
             tabSocios.UseVisualStyleBackColor = true;
-            //
+            // 
             // lblBuscar
-            //
+            // 
             lblBuscar.AutoSize = true;
             lblBuscar.Location = new Point(6, 186);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(190, 15);
+            lblBuscar.Size = new Size(189, 15);
             lblBuscar.TabIndex = 1;
             lblBuscar.Text = "Buscar por apellido, nombre o DNI";
-            //
+            // 
             // txtBuscar
-            //
+            // 
             txtBuscar.Location = new Point(202, 182);
             txtBuscar.MaxLength = 50;
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(260, 23);
             txtBuscar.TabIndex = 2;
             txtBuscar.KeyDown += txtBuscar_KeyDown;
-            //
+            // 
             // btnBuscar
-            //
+            // 
             btnBuscar.Location = new Point(468, 180);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(100, 27);
@@ -152,9 +166,9 @@
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = true;
             btnBuscar.Click += btnBuscar_Click;
-            //
+            // 
             // dgvSocios
-            //
+            // 
             dgvSocios.AllowUserToAddRows = false;
             dgvSocios.AllowUserToDeleteRows = false;
             dgvSocios.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -168,9 +182,9 @@
             dgvSocios.Size = new Size(964, 363);
             dgvSocios.TabIndex = 4;
             dgvSocios.CellClick += dgvSocios_CellClick;
-            //
+            // 
             // grpSocio
-            //
+            // 
             grpSocio.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpSocio.Controls.Add(lblNombre);
             grpSocio.Controls.Add(txtNombre);
@@ -195,112 +209,112 @@
             grpSocio.TabIndex = 0;
             grpSocio.TabStop = false;
             grpSocio.Text = "Datos del socio";
-            //
+            // 
             // lblNombre
-            //
+            // 
             lblNombre.AutoSize = true;
             lblNombre.Location = new Point(16, 28);
             lblNombre.Name = "lblNombre";
             lblNombre.Size = new Size(51, 15);
             lblNombre.TabIndex = 0;
             lblNombre.Text = "Nombre";
-            //
+            // 
             // txtNombre
-            //
+            // 
             txtNombre.Location = new Point(16, 46);
             txtNombre.MaxLength = 50;
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(200, 23);
             txtNombre.TabIndex = 1;
-            //
+            // 
             // lblApellido
-            //
+            // 
             lblApellido.AutoSize = true;
             lblApellido.Location = new Point(232, 28);
             lblApellido.Name = "lblApellido";
             lblApellido.Size = new Size(51, 15);
             lblApellido.TabIndex = 2;
             lblApellido.Text = "Apellido";
-            //
+            // 
             // txtApellido
-            //
+            // 
             txtApellido.Location = new Point(232, 46);
             txtApellido.MaxLength = 50;
             txtApellido.Name = "txtApellido";
             txtApellido.Size = new Size(200, 23);
             txtApellido.TabIndex = 3;
-            //
+            // 
             // lblDni
-            //
+            // 
             lblDni.AutoSize = true;
             lblDni.Location = new Point(448, 28);
             lblDni.Name = "lblDni";
             lblDni.Size = new Size(27, 15);
             lblDni.TabIndex = 4;
             lblDni.Text = "DNI";
-            //
+            // 
             // txtDni
-            //
+            // 
             txtDni.Location = new Point(448, 46);
             txtDni.MaxLength = 8;
             txtDni.Name = "txtDni";
             txtDni.Size = new Size(120, 23);
             txtDni.TabIndex = 5;
-            //
+            // 
             // lblEmail
-            //
+            // 
             lblEmail.AutoSize = true;
             lblEmail.Location = new Point(16, 80);
             lblEmail.Name = "lblEmail";
             lblEmail.Size = new Size(36, 15);
             lblEmail.TabIndex = 6;
             lblEmail.Text = "Email";
-            //
+            // 
             // txtEmail
-            //
+            // 
             txtEmail.Location = new Point(16, 98);
             txtEmail.MaxLength = 100;
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(260, 23);
             txtEmail.TabIndex = 7;
-            //
+            // 
             // lblTelefono
-            //
+            // 
             lblTelefono.AutoSize = true;
             lblTelefono.Location = new Point(292, 80);
             lblTelefono.Name = "lblTelefono";
-            lblTelefono.Size = new Size(52, 15);
+            lblTelefono.Size = new Size(53, 15);
             lblTelefono.TabIndex = 8;
             lblTelefono.Text = "Teléfono";
-            //
+            // 
             // txtTelefono
-            //
+            // 
             txtTelefono.Location = new Point(292, 98);
             txtTelefono.MaxLength = 20;
             txtTelefono.Name = "txtTelefono";
             txtTelefono.Size = new Size(140, 23);
             txtTelefono.TabIndex = 9;
-            //
+            // 
             // lblCategoria
-            //
+            // 
             lblCategoria.AutoSize = true;
             lblCategoria.Location = new Point(448, 80);
             lblCategoria.Name = "lblCategoria";
             lblCategoria.Size = new Size(58, 15);
             lblCategoria.TabIndex = 10;
             lblCategoria.Text = "Categoría";
-            //
+            // 
             // cboCategoria
-            //
+            // 
             cboCategoria.DropDownStyle = ComboBoxStyle.DropDownList;
             cboCategoria.FormattingEnabled = true;
             cboCategoria.Location = new Point(448, 98);
             cboCategoria.Name = "cboCategoria";
             cboCategoria.Size = new Size(160, 23);
             cboCategoria.TabIndex = 11;
-            //
+            // 
             // chkActivo
-            //
+            // 
             chkActivo.AutoSize = true;
             chkActivo.Checked = true;
             chkActivo.CheckState = CheckState.Checked;
@@ -310,9 +324,9 @@
             chkActivo.TabIndex = 12;
             chkActivo.Text = "Activo";
             chkActivo.UseVisualStyleBackColor = true;
-            //
+            // 
             // btnAgregar
-            //
+            // 
             btnAgregar.Location = new Point(16, 132);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(100, 27);
@@ -320,9 +334,9 @@
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
-            //
+            // 
             // btnModificar
-            //
+            // 
             btnModificar.Location = new Point(122, 132);
             btnModificar.Name = "btnModificar";
             btnModificar.Size = new Size(100, 27);
@@ -330,9 +344,9 @@
             btnModificar.Text = "Modificar";
             btnModificar.UseVisualStyleBackColor = true;
             btnModificar.Click += btnModificar_Click;
-            //
+            // 
             // btnEliminar
-            //
+            // 
             btnEliminar.Location = new Point(228, 132);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(100, 27);
@@ -340,9 +354,9 @@
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
             btnEliminar.Click += btnEliminar_Click;
-            //
+            // 
             // btnLimpiar
-            //
+            // 
             btnLimpiar.Location = new Point(334, 132);
             btnLimpiar.Name = "btnLimpiar";
             btnLimpiar.Size = new Size(100, 27);
@@ -350,9 +364,9 @@
             btnLimpiar.Text = "Limpiar";
             btnLimpiar.UseVisualStyleBackColor = true;
             btnLimpiar.Click += btnLimpiar_Click;
-            //
+            // 
             // tabCategorias
-            //
+            // 
             tabCategorias.Controls.Add(dgvCategorias);
             tabCategorias.Controls.Add(grpCategoria);
             tabCategorias.Location = new Point(4, 24);
@@ -362,9 +376,9 @@
             tabCategorias.TabIndex = 1;
             tabCategorias.Text = "Categorías";
             tabCategorias.UseVisualStyleBackColor = true;
-            //
+            // 
             // dgvCategorias
-            //
+            // 
             dgvCategorias.AllowUserToAddRows = false;
             dgvCategorias.AllowUserToDeleteRows = false;
             dgvCategorias.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -378,9 +392,9 @@
             dgvCategorias.Size = new Size(964, 447);
             dgvCategorias.TabIndex = 1;
             dgvCategorias.CellClick += dgvCategorias_CellClick;
-            //
+            // 
             // grpCategoria
-            //
+            // 
             grpCategoria.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpCategoria.Controls.Add(lblDescripcionCat);
             grpCategoria.Controls.Add(txtDescripcionCat);
@@ -396,35 +410,35 @@
             grpCategoria.TabIndex = 0;
             grpCategoria.TabStop = false;
             grpCategoria.Text = "Datos de la categoría";
-            //
+            // 
             // lblDescripcionCat
-            //
+            // 
             lblDescripcionCat.AutoSize = true;
             lblDescripcionCat.Location = new Point(16, 28);
             lblDescripcionCat.Name = "lblDescripcionCat";
             lblDescripcionCat.Size = new Size(69, 15);
             lblDescripcionCat.TabIndex = 0;
             lblDescripcionCat.Text = "Descripción";
-            //
+            // 
             // txtDescripcionCat
-            //
+            // 
             txtDescripcionCat.Location = new Point(16, 46);
             txtDescripcionCat.MaxLength = 50;
             txtDescripcionCat.Name = "txtDescripcionCat";
             txtDescripcionCat.Size = new Size(300, 23);
             txtDescripcionCat.TabIndex = 1;
-            //
+            // 
             // lblCuotaBase
-            //
+            // 
             lblCuotaBase.AutoSize = true;
             lblCuotaBase.Location = new Point(332, 28);
             lblCuotaBase.Name = "lblCuotaBase";
-            lblCuotaBase.Size = new Size(110, 15);
+            lblCuotaBase.Size = new Size(114, 15);
             lblCuotaBase.TabIndex = 2;
             lblCuotaBase.Text = "Cuota base mensual";
-            //
+            // 
             // nudCuotaBase
-            //
+            // 
             nudCuotaBase.DecimalPlaces = 2;
             nudCuotaBase.Increment = new decimal(new int[] { 500, 0, 0, 0 });
             nudCuotaBase.Location = new Point(332, 46);
@@ -432,11 +446,11 @@
             nudCuotaBase.Name = "nudCuotaBase";
             nudCuotaBase.Size = new Size(140, 23);
             nudCuotaBase.TabIndex = 3;
-            nudCuotaBase.ThousandsSeparator = true;
             nudCuotaBase.TextAlign = HorizontalAlignment.Right;
-            //
+            nudCuotaBase.ThousandsSeparator = true;
+            // 
             // btnCatAgregar
-            //
+            // 
             btnCatAgregar.Location = new Point(16, 82);
             btnCatAgregar.Name = "btnCatAgregar";
             btnCatAgregar.Size = new Size(100, 27);
@@ -444,9 +458,9 @@
             btnCatAgregar.Text = "Agregar";
             btnCatAgregar.UseVisualStyleBackColor = true;
             btnCatAgregar.Click += btnCatAgregar_Click;
-            //
+            // 
             // btnCatModificar
-            //
+            // 
             btnCatModificar.Location = new Point(122, 82);
             btnCatModificar.Name = "btnCatModificar";
             btnCatModificar.Size = new Size(100, 27);
@@ -454,9 +468,9 @@
             btnCatModificar.Text = "Modificar";
             btnCatModificar.UseVisualStyleBackColor = true;
             btnCatModificar.Click += btnCatModificar_Click;
-            //
+            // 
             // btnCatEliminar
-            //
+            // 
             btnCatEliminar.Location = new Point(228, 82);
             btnCatEliminar.Name = "btnCatEliminar";
             btnCatEliminar.Size = new Size(100, 27);
@@ -464,9 +478,9 @@
             btnCatEliminar.Text = "Eliminar";
             btnCatEliminar.UseVisualStyleBackColor = true;
             btnCatEliminar.Click += btnCatEliminar_Click;
-            //
+            // 
             // btnCatLimpiar
-            //
+            // 
             btnCatLimpiar.Location = new Point(334, 82);
             btnCatLimpiar.Name = "btnCatLimpiar";
             btnCatLimpiar.Size = new Size(100, 27);
@@ -474,9 +488,9 @@
             btnCatLimpiar.Text = "Limpiar";
             btnCatLimpiar.UseVisualStyleBackColor = true;
             btnCatLimpiar.Click += btnCatLimpiar_Click;
-            //
+            // 
             // tabActividades
-            //
+            // 
             tabActividades.Controls.Add(dgvActividades);
             tabActividades.Controls.Add(grpActividad);
             tabActividades.Location = new Point(4, 24);
@@ -486,9 +500,9 @@
             tabActividades.TabIndex = 2;
             tabActividades.Text = "Actividades";
             tabActividades.UseVisualStyleBackColor = true;
-            //
+            // 
             // dgvActividades
-            //
+            // 
             dgvActividades.AllowUserToAddRows = false;
             dgvActividades.AllowUserToDeleteRows = false;
             dgvActividades.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -502,9 +516,9 @@
             dgvActividades.Size = new Size(964, 447);
             dgvActividades.TabIndex = 1;
             dgvActividades.CellClick += dgvActividades_CellClick;
-            //
+            // 
             // grpActividad
-            //
+            // 
             grpActividad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grpActividad.Controls.Add(lblNombreAct);
             grpActividad.Controls.Add(txtNombreAct);
@@ -522,35 +536,35 @@
             grpActividad.TabIndex = 0;
             grpActividad.TabStop = false;
             grpActividad.Text = "Datos de la actividad";
-            //
+            // 
             // lblNombreAct
-            //
+            // 
             lblNombreAct.AutoSize = true;
             lblNombreAct.Location = new Point(16, 28);
             lblNombreAct.Name = "lblNombreAct";
             lblNombreAct.Size = new Size(51, 15);
             lblNombreAct.TabIndex = 0;
             lblNombreAct.Text = "Nombre";
-            //
+            // 
             // txtNombreAct
-            //
+            // 
             txtNombreAct.Location = new Point(16, 46);
             txtNombreAct.MaxLength = 80;
             txtNombreAct.Name = "txtNombreAct";
             txtNombreAct.Size = new Size(300, 23);
             txtNombreAct.TabIndex = 1;
-            //
+            // 
             // lblArancel
-            //
+            // 
             lblArancel.AutoSize = true;
             lblArancel.Location = new Point(332, 28);
             lblArancel.Name = "lblArancel";
-            lblArancel.Size = new Size(48, 15);
+            lblArancel.Size = new Size(47, 15);
             lblArancel.TabIndex = 2;
             lblArancel.Text = "Arancel";
-            //
+            // 
             // nudArancel
-            //
+            // 
             nudArancel.DecimalPlaces = 2;
             nudArancel.Increment = new decimal(new int[] { 500, 0, 0, 0 });
             nudArancel.Location = new Point(332, 46);
@@ -558,20 +572,20 @@
             nudArancel.Name = "nudArancel";
             nudArancel.Size = new Size(140, 23);
             nudArancel.TabIndex = 3;
-            nudArancel.ThousandsSeparator = true;
             nudArancel.TextAlign = HorizontalAlignment.Right;
-            //
+            nudArancel.ThousandsSeparator = true;
+            // 
             // lblCupo
-            //
+            // 
             lblCupo.AutoSize = true;
             lblCupo.Location = new Point(488, 28);
             lblCupo.Name = "lblCupo";
-            lblCupo.Size = new Size(35, 15);
+            lblCupo.Size = new Size(36, 15);
             lblCupo.TabIndex = 4;
             lblCupo.Text = "Cupo";
-            //
+            // 
             // nudCupo
-            //
+            // 
             nudCupo.Location = new Point(488, 46);
             nudCupo.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
             nudCupo.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -580,9 +594,9 @@
             nudCupo.TabIndex = 5;
             nudCupo.TextAlign = HorizontalAlignment.Right;
             nudCupo.Value = new decimal(new int[] { 10, 0, 0, 0 });
-            //
+            // 
             // btnActAgregar
-            //
+            // 
             btnActAgregar.Location = new Point(16, 82);
             btnActAgregar.Name = "btnActAgregar";
             btnActAgregar.Size = new Size(100, 27);
@@ -590,9 +604,9 @@
             btnActAgregar.Text = "Agregar";
             btnActAgregar.UseVisualStyleBackColor = true;
             btnActAgregar.Click += btnActAgregar_Click;
-            //
+            // 
             // btnActModificar
-            //
+            // 
             btnActModificar.Location = new Point(122, 82);
             btnActModificar.Name = "btnActModificar";
             btnActModificar.Size = new Size(100, 27);
@@ -600,9 +614,9 @@
             btnActModificar.Text = "Modificar";
             btnActModificar.UseVisualStyleBackColor = true;
             btnActModificar.Click += btnActModificar_Click;
-            //
+            // 
             // btnActEliminar
-            //
+            // 
             btnActEliminar.Location = new Point(228, 82);
             btnActEliminar.Name = "btnActEliminar";
             btnActEliminar.Size = new Size(100, 27);
@@ -610,9 +624,9 @@
             btnActEliminar.Text = "Eliminar";
             btnActEliminar.UseVisualStyleBackColor = true;
             btnActEliminar.Click += btnActEliminar_Click;
-            //
+            // 
             // btnActLimpiar
-            //
+            // 
             btnActLimpiar.Location = new Point(334, 82);
             btnActLimpiar.Name = "btnActLimpiar";
             btnActLimpiar.Size = new Size(100, 27);
@@ -620,9 +634,9 @@
             btnActLimpiar.Text = "Limpiar";
             btnActLimpiar.UseVisualStyleBackColor = true;
             btnActLimpiar.Click += btnActLimpiar_Click;
-            //
+            // 
             // tabInscripciones
-            //
+            // 
             tabInscripciones.Controls.Add(grpInscriptos);
             tabInscripciones.Controls.Add(grpInscribir);
             tabInscripciones.Location = new Point(4, 24);
@@ -632,72 +646,9 @@
             tabInscripciones.TabIndex = 3;
             tabInscripciones.Text = "Inscripciones";
             tabInscripciones.UseVisualStyleBackColor = true;
-            //
-            // grpInscribir
-            //
-            grpInscribir.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            grpInscribir.Controls.Add(lblSocio);
-            grpInscribir.Controls.Add(cboSocio);
-            grpInscribir.Controls.Add(lblActividades);
-            grpInscribir.Controls.Add(clbActividades);
-            grpInscribir.Controls.Add(btnInscribir);
-            grpInscribir.Location = new Point(6, 6);
-            grpInscribir.Name = "grpInscribir";
-            grpInscribir.Size = new Size(320, 571);
-            grpInscribir.TabIndex = 0;
-            grpInscribir.TabStop = false;
-            grpInscribir.Text = "Inscribir a actividades";
-            //
-            // lblSocio
-            //
-            lblSocio.AutoSize = true;
-            lblSocio.Location = new Point(16, 28);
-            lblSocio.Name = "lblSocio";
-            lblSocio.Size = new Size(36, 15);
-            lblSocio.TabIndex = 0;
-            lblSocio.Text = "Socio";
-            //
-            // cboSocio
-            //
-            cboSocio.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboSocio.FormattingEnabled = true;
-            cboSocio.Location = new Point(16, 46);
-            cboSocio.Name = "cboSocio";
-            cboSocio.Size = new Size(288, 23);
-            cboSocio.TabIndex = 1;
-            //
-            // lblActividades
-            //
-            lblActividades.AutoSize = true;
-            lblActividades.Location = new Point(16, 84);
-            lblActividades.Name = "lblActividades";
-            lblActividades.Size = new Size(68, 15);
-            lblActividades.TabIndex = 2;
-            lblActividades.Text = "Actividades";
-            //
-            // clbActividades
-            //
-            clbActividades.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            clbActividades.CheckOnClick = true;
-            clbActividades.FormattingEnabled = true;
-            clbActividades.Location = new Point(16, 102);
-            clbActividades.Name = "clbActividades";
-            clbActividades.Size = new Size(288, 418);
-            clbActividades.TabIndex = 3;
-            //
-            // btnInscribir
-            //
-            btnInscribir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnInscribir.Location = new Point(16, 532);
-            btnInscribir.Name = "btnInscribir";
-            btnInscribir.Size = new Size(140, 27);
-            btnInscribir.TabIndex = 4;
-            btnInscribir.Text = "Inscribir";
-            btnInscribir.UseVisualStyleBackColor = true;
-            btnInscribir.Click += btnInscribir_Click;
-            //
+            // 
             // grpInscriptos
-            //
+            // 
             grpInscriptos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grpInscriptos.Controls.Add(lblActividadVer);
             grpInscriptos.Controls.Add(cboActividadVer);
@@ -710,18 +661,18 @@
             grpInscriptos.TabIndex = 1;
             grpInscriptos.TabStop = false;
             grpInscriptos.Text = "Inscriptos por actividad";
-            //
+            // 
             // lblActividadVer
-            //
+            // 
             lblActividadVer.AutoSize = true;
             lblActividadVer.Location = new Point(16, 28);
             lblActividadVer.Name = "lblActividadVer";
-            lblActividadVer.Size = new Size(58, 15);
+            lblActividadVer.Size = new Size(57, 15);
             lblActividadVer.TabIndex = 0;
             lblActividadVer.Text = "Actividad";
-            //
+            // 
             // cboActividadVer
-            //
+            // 
             cboActividadVer.DropDownStyle = ComboBoxStyle.DropDownList;
             cboActividadVer.FormattingEnabled = true;
             cboActividadVer.Location = new Point(16, 46);
@@ -729,18 +680,18 @@
             cboActividadVer.Size = new Size(260, 23);
             cboActividadVer.TabIndex = 1;
             cboActividadVer.SelectedIndexChanged += cboActividadVer_SelectedIndexChanged;
-            //
+            // 
             // lblCupos
-            //
+            // 
             lblCupos.AutoSize = true;
             lblCupos.Location = new Point(292, 50);
             lblCupos.Name = "lblCupos";
-            lblCupos.Size = new Size(74, 15);
+            lblCupos.Size = new Size(75, 15);
             lblCupos.TabIndex = 2;
             lblCupos.Text = "Cupos libres:";
-            //
+            // 
             // dgvInscriptos
-            //
+            // 
             dgvInscriptos.AllowUserToAddRows = false;
             dgvInscriptos.AllowUserToDeleteRows = false;
             dgvInscriptos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -753,9 +704,9 @@
             dgvInscriptos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvInscriptos.Size = new Size(606, 440);
             dgvInscriptos.TabIndex = 3;
-            //
+            // 
             // btnDesinscribir
-            //
+            // 
             btnDesinscribir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDesinscribir.Location = new Point(16, 532);
             btnDesinscribir.Name = "btnDesinscribir";
@@ -764,9 +715,170 @@
             btnDesinscribir.Text = "Dar de baja la inscripción";
             btnDesinscribir.UseVisualStyleBackColor = true;
             btnDesinscribir.Click += btnDesinscribir_Click;
-            //
+            // 
+            // grpInscribir
+            // 
+            grpInscribir.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            grpInscribir.Controls.Add(lblSocio);
+            grpInscribir.Controls.Add(cboSocio);
+            grpInscribir.Controls.Add(lblActividades);
+            grpInscribir.Controls.Add(clbActividades);
+            grpInscribir.Controls.Add(btnInscribir);
+            grpInscribir.Location = new Point(6, 6);
+            grpInscribir.Name = "grpInscribir";
+            grpInscribir.Size = new Size(320, 571);
+            grpInscribir.TabIndex = 0;
+            grpInscribir.TabStop = false;
+            grpInscribir.Text = "Inscribir a actividades";
+            // 
+            // lblSocio
+            // 
+            lblSocio.AutoSize = true;
+            lblSocio.Location = new Point(16, 28);
+            lblSocio.Name = "lblSocio";
+            lblSocio.Size = new Size(36, 15);
+            lblSocio.TabIndex = 0;
+            lblSocio.Text = "Socio";
+            // 
+            // cboSocio
+            // 
+            cboSocio.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboSocio.FormattingEnabled = true;
+            cboSocio.Location = new Point(16, 46);
+            cboSocio.Name = "cboSocio";
+            cboSocio.Size = new Size(288, 23);
+            cboSocio.TabIndex = 1;
+            // 
+            // lblActividades
+            // 
+            lblActividades.AutoSize = true;
+            lblActividades.Location = new Point(16, 84);
+            lblActividades.Name = "lblActividades";
+            lblActividades.Size = new Size(68, 15);
+            lblActividades.TabIndex = 2;
+            lblActividades.Text = "Actividades";
+            // 
+            // clbActividades
+            // 
+            clbActividades.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            clbActividades.CheckOnClick = true;
+            clbActividades.FormattingEnabled = true;
+            clbActividades.Location = new Point(16, 102);
+            clbActividades.Name = "clbActividades";
+            clbActividades.Size = new Size(288, 418);
+            clbActividades.TabIndex = 3;
+            // 
+            // btnInscribir
+            // 
+            btnInscribir.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnInscribir.Location = new Point(16, 532);
+            btnInscribir.Name = "btnInscribir";
+            btnInscribir.Size = new Size(140, 27);
+            btnInscribir.TabIndex = 4;
+            btnInscribir.Text = "Inscribir";
+            btnInscribir.UseVisualStyleBackColor = true;
+            btnInscribir.Click += btnInscribir_Click;
+            // 
+            // tabReportes
+            // 
+            tabReportes.Controls.Add(groupBox2);
+            tabReportes.Controls.Add(groupBox1);
+            tabReportes.Location = new Point(4, 24);
+            tabReportes.Name = "tabReportes";
+            tabReportes.Padding = new Padding(3);
+            tabReportes.Size = new Size(976, 583);
+            tabReportes.TabIndex = 4;
+            tabReportes.Text = "Reportes";
+            tabReportes.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Controls.Add(dgvReporteActividades);
+            groupBox2.Location = new Point(6, 200);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(952, 375);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Inscriptos y recaudación por actividad";
+            // 
+            // dgvReporteActividades
+            // 
+            dgvReporteActividades.AllowUserToAddRows = false;
+            dgvReporteActividades.AllowUserToDeleteRows = false;
+            dgvReporteActividades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvReporteActividades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvReporteActividades.Dock = DockStyle.Fill;
+            dgvReporteActividades.Location = new Point(3, 19);
+            dgvReporteActividades.Name = "dgvReporteActividades";
+            dgvReporteActividades.ReadOnly = true;
+            dgvReporteActividades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvReporteActividades.Size = new Size(946, 353);
+            dgvReporteActividades.TabIndex = 0;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox1.Controls.Add(lblRecaudacionTotal);
+            groupBox1.Controls.Add(lblTotalInscriptos);
+            groupBox1.Controls.Add(btnConsultarReporte);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(cbFiltroActividad);
+            groupBox1.Location = new Point(6, 6);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(952, 188);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Filtros y resumen";
+            // 
+            // lblRecaudacionTotal
+            // 
+            lblRecaudacionTotal.AutoSize = true;
+            lblRecaudacionTotal.Location = new Point(492, 119);
+            lblRecaudacionTotal.Name = "lblRecaudacionTotal";
+            lblRecaudacionTotal.Size = new Size(105, 15);
+            lblRecaudacionTotal.TabIndex = 4;
+            lblRecaudacionTotal.Text = "Recaudación total:";
+            // 
+            // lblTotalInscriptos
+            // 
+            lblTotalInscriptos.AutoSize = true;
+            lblTotalInscriptos.Location = new Point(83, 119);
+            lblTotalInscriptos.Name = "lblTotalInscriptos";
+            lblTotalInscriptos.Size = new Size(90, 15);
+            lblTotalInscriptos.TabIndex = 3;
+            lblTotalInscriptos.Text = "Total inscriptos:";
+            // 
+            // btnConsultarReporte
+            // 
+            btnConsultarReporte.Location = new Point(492, 50);
+            btnConsultarReporte.Name = "btnConsultarReporte";
+            btnConsultarReporte.Size = new Size(100, 25);
+            btnConsultarReporte.TabIndex = 2;
+            btnConsultarReporte.Text = "Consultar";
+            btnConsultarReporte.UseVisualStyleBackColor = true;
+            btnConsultarReporte.Click += btnConsultarReporte_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(83, 53);
+            label1.Name = "label1";
+            label1.Size = new Size(57, 15);
+            label1.TabIndex = 1;
+            label1.Text = "Actividad";
+            // 
+            // cbFiltroActividad
+            // 
+            cbFiltroActividad.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbFiltroActividad.FormattingEnabled = true;
+            cbFiltroActividad.Location = new Point(146, 50);
+            cbFiltroActividad.Name = "cbFiltroActividad";
+            cbFiltroActividad.Size = new Size(288, 23);
+            cbFiltroActividad.TabIndex = 0;
+            // 
             // Form1
-            //
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(984, 611);
@@ -794,11 +906,16 @@
             ((System.ComponentModel.ISupportInitialize)nudArancel).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudCupo).EndInit();
             tabInscripciones.ResumeLayout(false);
-            grpInscribir.ResumeLayout(false);
-            grpInscribir.PerformLayout();
             grpInscriptos.ResumeLayout(false);
             grpInscriptos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInscriptos).EndInit();
+            grpInscribir.ResumeLayout(false);
+            grpInscribir.PerformLayout();
+            tabReportes.ResumeLayout(false);
+            groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvReporteActividades).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -865,5 +982,14 @@
         private Label lblCupos;
         private DataGridView dgvInscriptos;
         private Button btnDesinscribir;
+        private TabPage tabReportes;
+        private GroupBox groupBox2;
+        private DataGridView dgvReporteActividades;
+        private GroupBox groupBox1;
+        private Label label1;
+        private ComboBox cbFiltroActividad;
+        private Label lblRecaudacionTotal;
+        private Label lblTotalInscriptos;
+        private Button btnConsultarReporte;
     }
 }
