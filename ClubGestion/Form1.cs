@@ -471,18 +471,32 @@ namespace ClubGestion
         private void btnInscribir_Click(object sender, EventArgs e)
         {
             try
-            {
-                if (cboSocio.SelectedItem is not Socio socio)
-                    throw new ReglaNegocioException("Elegí un socio.");
+            { 
+                if (cboSocio.SelectedItem is not Socio socio) throw new ReglaNegocioException("Elegí un socio.");
+
                 var actividades = clbActividades.CheckedItems.Cast<Actividad>().ToList();
-                _inscripcionBll.Inscribir(socio, actividades);
-                MessageBox.Show("Inscripción registrada.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                for (int i = 0; i < clbActividades.Items.Count; i++) clbActividades.SetItemChecked(i, false);
+
+                if (actividades.Count == 0) throw new ReglaNegocioException("Elegí al menos una actividad.");
+
+                _inscripcionBll.InscribirYPagar(socio, actividades);
+
+                MessageBox.Show("El pago y las inscripciones se registraron correctamente.", "Club", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                for (int i = 0; i < clbActividades.Items.Count; i++)
+                {
+                    clbActividades.SetItemChecked(i, false);
+                }
+
                 CargarInscriptos();
+                CargarActividades();
             }
             catch (ReglaNegocioException ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    ex.Message,
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {

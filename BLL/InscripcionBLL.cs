@@ -10,6 +10,8 @@ namespace BLL
         private readonly ActividadDAL _actividadDal = new ActividadDAL();
         private readonly SocioDAL _socioDal = new SocioDAL();
 
+        private readonly CategoriaDAL _categoriaDal = new CategoriaDAL();
+
         public void Inscribir(Socio socio, List<Actividad> actividades)
         {
             try
@@ -116,6 +118,71 @@ namespace BLL
             catch (Exception ex)
             {
                 throw new Exception("Error inesperado al consultar las inscripciones del socio.", ex);
+            }
+        }
+
+        public void InscribirYPagar(Socio socio, List<Actividad> actividades)
+        {
+            try
+            {
+                if (socio == null || socio.Id <= 0) throw new ReglaNegocioException("Elegí un socio.");
+
+                if (!socio.Activo) throw new ReglaNegocioException("El socio está dado de baja.");
+
+                if (actividades == null || actividades.Count == 0) throw new ReglaNegocioException("Elegí al menos una actividad.");
+
+                var categoria = _categoriaDal.ObtenerPorId(socio.Categoria.Id);
+
+                if (categoria == null) throw new ReglaNegocioException("No se encontró la categoría del socio.");
+
+                foreach (var actividad in actividades)
+                {
+                    if (_dal.Existe(socio.Id, actividad.Id))
+                    {
+                        throw new ReglaNegocioException( socio + " ya está inscripto en " + actividad.Nombre + ".");
+                    }
+                }
+
+                using (var scope = new TransactionScope())
+                {
+                    bool primeraInscripcion = true;
+
+                    foreach (var actividad in actividades)
+                    {
+                        if (_actividadDal.ContarInscriptos(actividad.Id) >= actividad.Cupo)
+                        {
+                            throw new ReglaNegocioException( "No quedan cupos en " + actividad.Nombre + ". No se registró ninguna inscripción.");
+                        }
+
+                        decimal arancelAplicado = actividad.Arancel;
+
+                        if (primeraInscripcion)
+                        {
+                            arancelAplicado += categoria.CuotaBase;
+                            primeraInscripcion = false;
+                        }
+
+                        _dal.Insertar(
+                            socio.Id,
+                            actividad.Id,
+                            DateTime.Now,
+                            arancelAplicado);
+                    }
+
+                    scope.Complete();
+                }
+            }
+            catch (ReglaNegocioException)
+            {
+                throw;
+            }
+            catch (AccesoDatosException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error inesperado al procesar el pago y las inscripciones.", ex);
             }
         }
     }
