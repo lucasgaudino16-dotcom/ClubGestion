@@ -127,7 +127,7 @@
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(375, 388);
+            txtBuscar.Location = new Point(410, 388);
             txtBuscar.Margin = new Padding(6);
             txtBuscar.MaxLength = 50;
             txtBuscar.Name = "txtBuscar";
@@ -137,7 +137,7 @@
             // 
             // btnBuscar
             // 
-            btnBuscar.Location = new Point(869, 384);
+            btnBuscar.Location = new Point(904, 384);
             btnBuscar.Margin = new Padding(6);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(186, 58);
