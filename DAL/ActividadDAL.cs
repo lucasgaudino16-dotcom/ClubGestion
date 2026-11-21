@@ -1,6 +1,6 @@
-using Microsoft.Data.SqlClient;
 using Entity;
 using MAPPER;
+using Microsoft.Data.SqlClient;
 
 namespace DAL
 {
@@ -146,5 +146,46 @@ namespace DAL
                 throw new AccesoDatosException("Error al eliminar la actividad.", ex);
             }
         }
+
+        public List<ReporteActividadDTO> ObtenerReporte(int? idActividad)
+        {
+            try
+            {
+                List<ReporteActividadDTO> lista = new List<ReporteActividadDTO>();
+
+                string sql = @"
+                    SELECT 
+                        a.NOMBRE,
+                        a.CUPO,
+                        a.ARANCEL,
+                        COUNT(i.ID_SOCIO) AS CANTIDAD_INSCRIPTOS,
+                        ISNULL(SUM(i.ARANCEL_APLICADO), 0) AS RECAUDACION
+                    FROM ACTIVIDAD a
+                    LEFT JOIN INSCRIPCION i ON a.ID_ACTIVIDAD = i.ID_ACTIVIDAD
+                    WHERE (@IdActividad IS NULL OR a.ID_ACTIVIDAD = @IdActividad)
+                    GROUP BY a.ID_ACTIVIDAD, a.NOMBRE, a.CUPO, a.ARANCEL
+                    ORDER BY a.NOMBRE;";
+
+                    using (SqlConnection conn = new SqlConnection(Conexion.Cadena))
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@IdActividad", (object?)idActividad ?? DBNull.Value);
+
+                        conn.Open();
+                        using (var dr = cmd.ExecuteReader())
+                        {
+                            while (dr.Read())
+                                lista.Add(ReporteActividadDTOMapper.Map(dr));
+                        }
+                    }
+
+                return lista;
+            }
+            catch (SqlException ex)
+            {
+                throw new AccesoDatosException("Error al consultar el reporte de inscriptos y recaudaciones.", ex);
+            }
+        }
+
     }
 }
