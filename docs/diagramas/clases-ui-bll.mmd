@@ -12,13 +12,22 @@ classDiagram
             -CargarSocios()
             -CargarActividades()
             -CargarInscriptos()
+            -CargarReporte()
             -btnAgregar_Click()
             -btnModificar_Click()
             -btnEliminar_Click()
             -btnBuscar_Click()
             -btnInscribir_Click()
             -btnDesinscribir_Click()
+            -btnConsultarReporte_Click()
             -MostrarError(Exception)
+        }
+        class DatosSocioControl {
+            <<UserControl>>
+            +ObtenerDatos() Socio
+            +CargarDatos(Socio)
+            +Limpiar()
+            +CargarCategorias(List~Categoria~)
         }
     }
 
@@ -48,6 +57,7 @@ classDiagram
             +ObtenerTodas() List~Actividad~
             +ObtenerPorId(int) Actividad
             +CuposLibres(Actividad) int
+            +ObtenerReporte(int?) List~ReporteActividadDTO~
             +Insertar(Actividad)
             +Modificar(Actividad)
             +Eliminar(int)
@@ -57,7 +67,9 @@ classDiagram
             -InscripcionDAL _dal
             -ActividadDAL _actividadDal
             -SocioDAL _socioDal
+            -CategoriaDAL _categoriaDal
             +Inscribir(Socio, List~Actividad~)
+            +InscribirYPagar(Socio, List~Actividad~)
             +Desinscribir(Socio, Actividad)
             +Desinscribir(int, int)
             +ObtenerPorActividad(int) List~InscripcionDTO~
@@ -70,6 +82,7 @@ classDiagram
         }
     }
 
+    Form1 *-- DatosSocioControl
     Form1 --> CategoriaBLL
     Form1 --> SocioBLL
     Form1 --> ActividadBLL

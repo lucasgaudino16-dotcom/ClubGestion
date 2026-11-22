@@ -15,7 +15,8 @@ Aplicación de escritorio para un club de barrio. Maneja socios, categorías, ac
 - Socios: alta, modificación, baja, eliminación y búsqueda por apellido, nombre o DNI.
 - Categorías: ABM con la cuota base.
 - Actividades: ABM con arancel y cupo.
-- Inscripciones: anotar a un socio en una o varias actividades en una sola transacción, ver los inscriptos y los cupos libres, y dar de baja una inscripción.
+- Inscripciones: anotar a un socio en una o varias actividades en una sola transacción, registrando el importe a pagar, ver los inscriptos y los cupos libres, y dar de baja una inscripción.
+- Reportes: inscriptos, cupos libres y recaudación por actividad.
 
 ## Proyectos
 
@@ -23,7 +24,7 @@ Aplicación de escritorio para un club de barrio. Maneja socios, categorías, ac
 - `MAPPER`: pasa las filas de la base a objetos.
 - `DAL`: acceso a datos.
 - `BLL`: reglas de negocio y transacciones.
-- `ClubGestion`: formulario de Windows Forms.
+- `ClubGestion`: formulario de Windows Forms y control de usuario con los datos del socio.
 
 ## Documentación
 

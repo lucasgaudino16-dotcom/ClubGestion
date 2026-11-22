@@ -31,6 +31,7 @@ classDiagram
             +ObtenerTodas() List~Actividad~
             +ObtenerPorId(int) Actividad
             +ContarInscriptos(int) int
+            +ObtenerReporte(int?) List~ReporteActividadDTO~
             +ExisteNombre(string, int) bool
             +Insertar(Actividad) int
             +Modificar(Actividad)
@@ -57,3 +58,4 @@ classDiagram
     InscripcionBLL --> InscripcionDAL
     InscripcionBLL --> ActividadDAL
     InscripcionBLL --> SocioDAL
+    InscripcionBLL --> CategoriaDAL

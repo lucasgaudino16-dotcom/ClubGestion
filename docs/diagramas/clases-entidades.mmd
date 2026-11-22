@@ -47,6 +47,15 @@ classDiagram
         +decimal Arancel
     }
 
+    class ReporteActividadDTO {
+        +string NombreActividad
+        +int CupoMaximo
+        +int CantidadInscriptos
+        +int CuposLibres
+        +decimal ValorCuota
+        +decimal RecaudacionTotal
+    }
+
     class Exception
 
     class ReglaNegocioException {

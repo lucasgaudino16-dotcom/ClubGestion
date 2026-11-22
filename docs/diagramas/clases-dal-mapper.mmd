@@ -24,6 +24,10 @@ classDiagram
             +Map(IDataRecord) Actividad
             +CargarParametros(SqlCommand, Actividad)
         }
+        class ReporteActividadDTOMapper {
+            <<static>>
+            +Map(IDataRecord) ReporteActividadDTO
+        }
         class InscripcionMapper {
             <<static>>
             +Map(IDataRecord) Inscripcion
@@ -33,6 +37,7 @@ classDiagram
     CategoriaDAL ..> CategoriaMapper
     SocioDAL ..> SocioMapper
     ActividadDAL ..> ActividadMapper
+    ActividadDAL ..> ReporteActividadDTOMapper
     InscripcionDAL ..> InscripcionMapper
     SocioMapper ..> CategoriaMapper
     InscripcionMapper ..> SocioMapper

@@ -31,12 +31,13 @@
   .caratula .franja { background: #662938; padding: 11mm 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .caratula .franja img { width: 125mm; display: block; margin: 0 auto; }
   .caratula .fac { font-size: 13pt; color: #662938; margin-top: 8mm; }
-  .caratula .linea { width: 60mm; border-top: 1.5pt solid #8a384c; margin: 14mm auto 12mm; }
+  .caratula .linea { width: 60mm; border-top: 1.5pt solid #8a384c; margin: 9mm auto 8mm; }
   .caratula .tp { font-size: 13pt; }
   .caratula .nombre { font-size: 30pt; font-weight: bold; color: #662938; margin: 5mm 0 3mm; }
   .caratula .sub { font-size: 12pt; }
-  .caratula .datos { margin: auto auto 6mm; width: 132mm; font-size: 11pt; }
-  .caratula .datos td { border: none; border-bottom: 1px solid #bbb; padding: 5pt 4pt; }
+  .caratula .datos { margin: auto auto 5mm; width: 132mm; font-size: 10.5pt; }
+  .caratula .integrantes { margin-top: 0; }
+  .caratula .datos td { border: none; border-bottom: 1px solid #bbb; padding: 3.5pt 4pt; }
   .caratula .datos td:first-child { font-weight: bold; color: #662938; width: 30%; }
   .caratula .datos td { white-space: nowrap; }
 </style>
@@ -55,8 +56,16 @@
     <tr><td>Profesor</td><td>Gonzalo Arigós</td></tr>
     <tr><td>Comisión</td><td>2-B</td></tr>
     <tr><td>Cuatrimestre</td><td>2° cuatrimestre de 2026</td></tr>
-    <tr><td>Fecha de entrega</td><td>15 de noviembre de 2026</td></tr>
+    <tr><td>Fecha de entrega</td><td>23 de noviembre de 2026</td></tr>
     <tr><td>Repositorio</td><td>github.com/lucasgaudino16-dotcom/ClubGestion</td></tr>
+  </table>
+  <table class="datos integrantes">
+    <tr><td>Integrantes</td><td>Gaudino, Lucas</td><!--DNI1--></tr>
+    <tr><td></td><td>Balmaceda, Lucas Agustin</td><!--DNI2--></tr>
+    <tr><td></td><td>Acosta Garcia, Azul</td><!--DNI3--></tr>
+    <tr><td></td><td>Lulkin, Mauro</td><!--DNI4--></tr>
+    <tr><td></td><td>Mathurin, Victoria</td><!--DNI5--></tr>
+    <tr><td></td><td>Guaita, Deborah</td><!--DNI6--></tr>
   </table>
 </div>
 
@@ -70,10 +79,11 @@
   <li>Diagrama de base de datos</li>
   <li>Diagrama de clases</li>
   <li>Manual de usuario</li>
+  <li>Uso de IA</li>
 </ol>
 
 <h1 class="espacio">1. Descripción del sistema</h1>
-<p>ClubGestion es una aplicación de escritorio para la secretaría de un club de barrio. Sirve para llevar los socios, las categorías de socio, las actividades del club y las inscripciones de los socios a esas actividades.</p>
+<p>ClubGestion es una aplicación de escritorio para la secretaría de un club de barrio. Sirve para llevar los socios, las categorías de socio, las actividades del club y las inscripciones de los socios a esas actividades, y para ver cuánto se recaudó por actividad.</p>
 
 <h2>Problema que resuelve</h2>
 <p>El club tiene socios y ofrece actividades como fútbol, natación o yoga. Cada socio paga una cuota por mes según su categoría y además paga un arancel por cada actividad en la que se anota. Las actividades tienen cupo porque los lugares son limitados.</p>
@@ -89,10 +99,11 @@
   <li>Dar de alta un socio, modificar sus datos, buscarlo por apellido, nombre o DNI y darlo de baja.</li>
   <li>Cargar y modificar las categorías de socio con su cuota mensual.</li>
   <li>Cargar y modificar las actividades con su arancel y su cupo.</li>
-  <li>Anotar a un socio en una o varias actividades al mismo tiempo.</li>
+  <li>Anotar a un socio en una o varias actividades al mismo tiempo y dejar registrado el importe que le corresponde pagar.</li>
   <li>Ver cuántos lugares libres quedan en cada actividad.</li>
   <li>Ver quiénes están anotados en una actividad.</li>
   <li>Dar de baja una inscripción cuando el socio deja la actividad.</li>
+  <li>Consultar un reporte con los inscriptos, los cupos libres y la recaudación de cada actividad.</li>
 </ul>
 <p>El sistema no deja anotar a un socio dado de baja, pasarse del cupo, anotar dos veces al mismo socio en la misma actividad, repetir un DNI ni borrar datos que ya tienen inscripciones.</p>
 
@@ -101,7 +112,7 @@
 
 <h2>Qué no hace</h2>
 <ul>
-  <li>No cobra ni se conecta con medios de pago. Solo guarda el importe que corresponde y el cobro lo hace la tesorería del club.</li>
+  <li>No se conecta con medios de pago. Guarda el importe que le corresponde pagar al socio y el cobro lo hace la tesorería del club.</li>
   <li>No tiene usuarios ni contraseñas, porque se usa en una sola computadora.</li>
   <li>No manda mails ni avisos.</li>
   <li>No funciona por internet. Es una aplicación de escritorio con una base de datos local.</li>
@@ -154,24 +165,27 @@
   <li>No se puede anotar a un socio dado de baja.</li>
   <li>No se puede anotar dos veces al mismo socio en la misma actividad.</li>
   <li>No se puede anotar a nadie si la actividad no tiene cupos libres.</li>
-  <li>Al anotar se guarda la fecha del momento y el arancel que tiene la actividad.</li>
+  <li>Al anotar se guarda la fecha del momento y el importe aplicado, que es el arancel que tiene la actividad.</li>
+  <li>En la primera actividad de cada trámite al importe se le suma la cuota base de la categoría del socio. Así la cuota se cobra una sola vez aunque el socio se anote en varias actividades juntas.</li>
 </ul>
 
 <h1 class="salto">4. Transacciones</h1>
-<p>La transacción principal del sistema es inscribir a un socio en varias actividades juntas.</p>
+<p>La transacción principal del sistema es inscribir a un socio en varias actividades juntas y registrar el pago que le corresponde.</p>
 <p>El usuario tilda, por ejemplo, Fútbol 5, Natación y Yoga y aprieta Inscribir. Son tres inscripciones, pero para el club es un solo trámite. Si Yoga no tiene más cupo, no se guarda ninguna de las tres y el sistema avisa cuál fue la actividad que falló. O se guardan todas o no se guarda ninguna.</p>
-<p>Esto está hecho en el método <code>Inscribir</code> de <code>InscripcionBLL</code> con un <code>TransactionScope</code>. El método recorre las actividades elegidas, controla el cupo de cada una y la inserta. Si alguna regla falla se lanza una <code>ReglaNegocioException</code>, no se llega a ejecutar <code>scope.Complete()</code> y SQL Server deshace lo que se había insertado hasta ese momento. Cada método de la DAL abre y cierra su propia conexión, y como todos usan la misma cadena de conexión quedan dentro de la misma transacción.</p>
-<p>El resto de las operaciones que escriben en la base (altas, modificaciones y bajas de socios, categorías, actividades e inscripciones) también se ejecutan dentro de un <code>TransactionScope</code> en la BLL.</p>
+<p>Esto está hecho en el método <code>InscribirYPagar</code> de <code>InscripcionBLL</code> con un <code>TransactionScope</code>. Antes de abrir la transacción el método valida que haya un socio activo y al menos una actividad, busca la categoría del socio y controla que no esté ya anotado en ninguna de las actividades elegidas. Después, dentro del <code>TransactionScope</code>, recorre las actividades, controla el cupo de cada una y la inserta con su importe.</p>
+<p>El importe de cada inscripción es el arancel de la actividad. A la primera inscripción del trámite se le suma además la cuota base de la categoría del socio. Por ejemplo, un socio de categoría Activo (cuota de 15000) que se anota en Fútbol 5 (6000) y Yoga (5000) queda con 21000 en la primera inscripción y 5000 en la segunda.</p>
+<p>Si alguna regla falla se lanza una <code>ReglaNegocioException</code>, no se llega a ejecutar <code>scope.Complete()</code> y SQL Server deshace lo que se había insertado hasta ese momento. Cada método de la DAL abre y cierra su propia conexión, y como todos usan la misma cadena de conexión quedan dentro de la misma transacción.</p>
+<p>El resto de las operaciones que escriben en la base (altas, modificaciones y bajas de socios, categorías, actividades e inscripciones) también se ejecutan dentro de un <code>TransactionScope</code> en la BLL. El reporte solo consulta, por eso no usa transacción.</p>
 
 <h1 class="espacio">5. Arquitectura en capas</h1>
 <p>La solución está dividida en cinco proyectos, uno por capa.</p>
 <table>
   <tr><th style="width:24%">Capa</th><th>Qué hace</th></tr>
-  <tr><td>UI (proyecto ClubGestion, Windows Forms)</td><td>Tiene las pantallas. Toma lo que carga el usuario, llama a la BLL y muestra los resultados y los mensajes. No tiene reglas de negocio.</td></tr>
+  <tr><td>UI (proyecto ClubGestion, Windows Forms)</td><td>Tiene las pantallas. Toma lo que carga el usuario, llama a la BLL y muestra los resultados y los mensajes. No tiene reglas de negocio. Los datos del socio están en un control de usuario propio, <code>DatosSocioControl</code>, que el formulario reutiliza.</td></tr>
   <tr><td>BLL</td><td>Tiene las reglas de negocio y las transacciones. Valida los datos antes de llamar a la DAL.</td></tr>
   <tr><td>DAL</td><td>Se conecta a la base de datos con ADO.NET. Hace las consultas, altas, modificaciones y bajas usando <code>SqlParameter</code>.</td></tr>
   <tr><td>MAPPER</td><td>Convierte las filas que devuelve la base en objetos.</td></tr>
-  <tr><td>Entity</td><td>Tiene las clases Socio, Categoria, Actividad e Inscripcion y las dos excepciones propias.</td></tr>
+  <tr><td>Entity</td><td>Tiene las clases Socio, Categoria, Actividad e Inscripcion, las dos clases que se usan para mostrar datos en las grillas (InscripcionDTO y ReporteActividadDTO) y las dos excepciones propias.</td></tr>
 </table>
 <p>Cada capa usa solamente a la que tiene abajo. La UI llama a la BLL, la BLL llama a la DAL y la DAL usa los mappers. La UI nunca llama directo a la DAL. De esta forma cada regla de negocio está escrita en un solo lugar.</p>
 <h2>Manejo de errores</h2>
@@ -197,26 +211,26 @@
 <h1 class="salto">7. Diagrama de clases</h1>
 <p>El diagrama está dividido en cuatro partes para que se pueda leer bien. La primera muestra las entidades y las excepciones. Las otras tres muestran las clases de cada capa y a qué clases de la capa de abajo usan.</p>
 <figure>
-  <img src="img/diagrama-de-clases-entidades.png" alt="Diagrama de clases de las entidades" style="width: 160mm;">
+  <img src="img/diagrama-de-clases-entidades.png" alt="Diagrama de clases de las entidades" style="height: 178mm;">
   <figcaption>Figura 2. Clases del proyecto Entity.</figcaption>
 </figure>
-<p><code>Socio</code> tiene una <code>Categoria</code>, e <code>Inscripcion</code> tiene un <code>Socio</code> y una <code>Actividad</code>. <code>InscripcionDTO</code> es la clase que se usa para mostrar los inscriptos en la grilla, con los datos ya listos. Las clases de las otras capas usan estas entidades, pero esas flechas no están dibujadas en las figuras siguientes para que no queden tan cargadas.</p>
+<p><code>Socio</code> tiene una <code>Categoria</code>, e <code>Inscripcion</code> tiene un <code>Socio</code> y una <code>Actividad</code>. <code>InscripcionDTO</code> es la clase que se usa para mostrar los inscriptos en la grilla, con los datos ya listos, y <code>ReporteActividadDTO</code> es la que se usa para la grilla del reporte. Las clases de las otras capas usan estas entidades, pero esas flechas no están dibujadas en las figuras siguientes para que no queden tan cargadas.</p>
 
-<p class="salto">El formulario tiene una instancia de cada clase de la BLL y no usa nada de la DAL. <code>InscripcionBLL</code> usa a <code>InscripcionDTOMapper</code> para armar la lista que se muestra en la grilla de inscriptos.</p>
+<p class="salto">El formulario tiene una instancia de cada clase de la BLL y no usa nada de la DAL. También contiene al control <code>DatosSocioControl</code>, que tiene los campos del socio y los métodos para leerlos, cargarlos y limpiarlos. <code>InscripcionBLL</code> usa a <code>InscripcionDTOMapper</code> para armar la lista que se muestra en la grilla de inscriptos.</p>
 <figure>
-  <img src="img/diagrama-de-clases-ui-bll.png" alt="Diagrama de clases de la UI y la BLL" style="height: 218mm;">
+  <img src="img/diagrama-de-clases-ui-bll.png" alt="Diagrama de clases de la UI y la BLL" style="height: 205mm;">
   <figcaption>Figura 3. Clases de la UI y de la BLL.</figcaption>
 </figure>
 
-<p class="salto">Cada clase de la BLL usa a su clase de la DAL. <code>SocioBLL</code> además usa a <code>InscripcionDAL</code> para saber si el socio tiene inscripciones, e <code>InscripcionBLL</code> usa a <code>SocioDAL</code> y a <code>ActividadDAL</code>. Las cuatro clases de la DAL leen la cadena de conexión de la clase <code>Conexion</code>.</p>
+<p class="salto">Cada clase de la BLL usa a su clase de la DAL. <code>SocioBLL</code> además usa a <code>InscripcionDAL</code> para saber si el socio tiene inscripciones, e <code>InscripcionBLL</code> usa a <code>SocioDAL</code>, a <code>ActividadDAL</code> y a <code>CategoriaDAL</code>, de donde saca la cuota base. Las cuatro clases de la DAL leen la cadena de conexión de la clase <code>Conexion</code>.</p>
 <figure>
-  <img src="img/diagrama-de-clases-bll-dal.png" alt="Diagrama de clases de la BLL y la DAL" style="height: 212mm;">
+  <img src="img/diagrama-de-clases-bll-dal.png" alt="Diagrama de clases de la BLL y la DAL" style="height: 208mm;">
   <figcaption>Figura 4. Clases de la DAL y qué clase de la BLL usa a cada una.</figcaption>
 </figure>
 
-<p class="salto">Cada clase de la DAL usa a su mapper para convertir las filas en objetos. <code>SocioMapper</code> usa a <code>CategoriaMapper</code> para armar la categoría del socio, e <code>InscripcionMapper</code> usa a <code>SocioMapper</code> y a <code>ActividadMapper</code>.</p>
+<p class="salto">Cada clase de la DAL usa a su mapper para convertir las filas en objetos. <code>SocioMapper</code> usa a <code>CategoriaMapper</code> para armar la categoría del socio, e <code>InscripcionMapper</code> usa a <code>SocioMapper</code> y a <code>ActividadMapper</code>. <code>ActividadDAL</code> usa además a <code>ReporteActividadDTOMapper</code> para armar las filas del reporte.</p>
 <figure>
-  <img src="img/diagrama-de-clases-dal-mapper.png" alt="Diagrama de clases de los mappers" style="width: 150mm;">
+  <img src="img/diagrama-de-clases-dal-mapper.png" alt="Diagrama de clases de los mappers" style="width: 170mm;">
   <figcaption>Figura 5. Clases del proyecto MAPPER y qué clase de la DAL usa a cada una.</figcaption>
 </figure>
 
@@ -227,7 +241,7 @@
   <li>Abrir <code>ClubGestion.sln</code> en Visual Studio 2022 y ejecutar el proyecto ClubGestion.</li>
   <li>Si el servidor no es LocalDB, cambiar el <code>Data Source</code> en <code>ClubGestion\App.config</code>. No hace falta volver a compilar.</li>
 </ol>
-<p>La aplicación es una sola ventana con cuatro pestañas: Socios, Categorías, Actividades e Inscripciones. Las tres primeras funcionan igual. Arriba está el formulario y abajo la grilla. Al hacer clic en una fila de la grilla los datos se cargan arriba para modificarlos o eliminarlos, y el botón Limpiar vacía el formulario para cargar uno nuevo.</p>
+<p>La aplicación es una sola ventana con cinco pestañas: Socios, Categorías, Actividades, Inscripciones y Reportes. Las tres primeras funcionan igual. Arriba está el formulario y abajo la grilla. Al hacer clic en una fila de la grilla los datos se cargan arriba para modificarlos o eliminarlos, y el botón Limpiar vacía el formulario para cargar uno nuevo.</p>
 
 <h2>Socios</h2>
 <figure class="captura"><img src="img/01-socios.png" alt="Pestaña Socios"><figcaption>Figura 6. Pestaña Socios.</figcaption></figure>
@@ -259,9 +273,19 @@
 <h2 class="salto">Inscripciones</h2>
 <figure class="captura"><img src="img/04-inscripciones.png" alt="Pestaña Inscripciones"><figcaption>Figura 10. Pestaña Inscripciones.</figcaption></figure>
 <ul>
-  <li>Inscribir: elegir el socio en la lista (solo aparecen los activos), tildar una o varias actividades y apretar Inscribir. Si alguna actividad falla porque no tiene cupo o porque el socio ya estaba anotado, no se guarda ninguna y el aviso dice cuál fue.</li>
+  <li>Inscribir: elegir el socio en la lista (solo aparecen los activos), tildar una o varias actividades y apretar Inscribir. El sistema avisa que el pago y las inscripciones se registraron. El importe de la primera actividad incluye la cuota base de la categoría del socio. Si alguna actividad falla porque no tiene cupo o porque el socio ya estaba anotado, no se guarda ninguna y el aviso dice cuál fue.</li>
   <li>Ver inscriptos: elegir la actividad en el combo de la derecha. La grilla muestra quiénes están anotados, con qué arancel y en qué fecha. Arriba se ven los cupos libres.</li>
   <li>Dar de baja una inscripción: seleccionar la fila en la grilla de inscriptos y apretar Dar de baja la inscripción. El sistema pide confirmación.</li>
+</ul>
+
+<h2 class="salto">Reportes</h2>
+<figure class="captura"><img src="img/06-reportes.png" alt="Pestaña Reportes"><figcaption>Figura 11. Pestaña Reportes.</figcaption></figure>
+<ul>
+  <li>Al abrir la pestaña se ven todas las actividades con su cupo, la cantidad de inscriptos, los cupos libres, el arancel actual y la recaudación.</li>
+  <li>Filtrar: elegir una actividad en el combo y apretar Consultar. Con "Todas las actividades" se vuelve a ver la lista completa.</li>
+  <li>Arriba de la grilla se muestran el total de inscriptos y la recaudación total de lo que se está viendo.</li>
+  <li>La recaudación es la suma de los importes guardados en las inscripciones, por eso no cambia si después se modifica el arancel de la actividad.</li>
+  <li>Después de inscribir o dar de baja a un socio, apretar Consultar para actualizar los números.</li>
 </ul>
 
 <div class="junto">
@@ -280,6 +304,15 @@
   <tr><td>Error al consultar los socios. Detalle: Cannot open database...</td><td>La base no está disponible. Revisar que LocalDB esté funcionando y que se haya ejecutado el script.</td></tr>
 </table>
 </div>
+
+<h1 class="espacio">9. Uso de IA</h1>
+<ol>
+  <li>Se utilizó IA para la planificación del proyecto.</li>
+  <li>Se utilizó IA para el primer push del repositorio de GitHub.</li>
+  <li>Se utilizó IA para hacer cambios que subieron dos compañeros a la rama main.</li>
+  <li>Se utilizó IA para mejorar la redacción de algunos puntos del documento.</li>
+  <li>Se utilizó IA para mejorar la interfaz del programa en el código con la modalidad de las ventanas.</li>
+</ol>
 
 </body>
 </html>
