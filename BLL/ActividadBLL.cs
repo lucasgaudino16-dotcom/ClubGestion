@@ -1,6 +1,6 @@
-using System.Transactions;
 using DAL;
 using Entity;
+using System.Transactions;
 
 namespace BLL
 {
@@ -119,6 +119,25 @@ namespace BLL
             catch (Exception ex)
             {
                 throw new Exception("Error inesperado al eliminar la actividad.", ex);
+            }
+        }
+
+
+        public List<ReporteActividadDTO> ObtenerReporte(int? idActividad = null)
+        {
+            try
+            {
+                if (idActividad.HasValue && idActividad.Value <= 0)
+                    throw new ReglaNegocioException("La actividad seleccionada no es válida.");
+
+                return _dal.ObtenerReporte(idActividad);
+
+            }
+            catch (ReglaNegocioException) { throw; }
+            catch (AccesoDatosException) { throw; }
+            catch (Exception ex)
+            {
+                throw new Exception("Error inesperado al generar el reporte de actividades.", ex);
             }
         }
 

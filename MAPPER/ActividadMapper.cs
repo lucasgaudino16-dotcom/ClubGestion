@@ -1,5 +1,6 @@
 using System.Data;
 using Entity;
+using Microsoft.Data.SqlClient;
 
 namespace MAPPER
 {
@@ -13,7 +14,7 @@ namespace MAPPER
             Cupo = (int)dr["CUPO"]
         };
 
-        public static void CargarParametros(Microsoft.Data.SqlClient.SqlCommand cmd, Actividad a)
+        public static void CargarParametros(SqlCommand cmd, Actividad a)
         {
             cmd.Parameters.AddWithValue("@Nombre", a.Nombre);
             cmd.Parameters.AddWithValue("@Arancel", a.Arancel);
